@@ -6,7 +6,7 @@
   <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'/>
   <meta content='true' name='HandheldFriendly'/>
   <meta content='yes' name='apple-mobile-web-app-capable'/>
-  <title>আলোকিত কুইজ | রমজান ডে ওয়াইজ | ১৬:৯</title>
+  <title>আলোকিত কুইজ | রমজান ডে ওয়াইজ + ভয়েস</title>
   <!-- Google Fonts & Font Awesome 6 -->
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -40,14 +40,13 @@
       z-index: 1;
     }
 
-    /* ----- মেইন কন্টেইনার (মোবাইল ফার্স্ট - পোর্ট্রেট) ----- */
+    /* ----- মেইন কন্টেইনার (মোবাইল ফার্স্ট) ----- */
     .live-container {
       position: relative;
       z-index: 10;
       width: 100%;
       max-width: 1600px;
-      height: 100%; /* সর্বদা পূর্ণ উচ্চতা */
-      max-height: 100%;
+      height: 100%;
       background: rgba(8, 12, 25, 0.75);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
@@ -176,7 +175,7 @@
       box-shadow: 0 0 60px #2e7d32, 0 10px 0 #0a2e0a !important;
     }
 
-    /* ----- টাইমার সেকশন (মোবাইল পোর্ট্রেট: কলাম) ----- */
+    /* ----- টাইমার সেকশন ----- */
     .timer-section {
       display: flex;
       flex-direction: column;
@@ -239,15 +238,17 @@
       white-space: nowrap;
     }
 
+    /* ----- কন্ট্রোলস (অডিও, ভয়েস, ফুলস্ক্রিন) ----- */
     .controls-wrapper {
       display: flex;
       gap: 15px;
       align-items: center;
       width: 100%;
       justify-content: flex-end;
+      flex-wrap: wrap;
     }
 
-    .audio-control {
+    .audio-control, .voice-control {
       display: flex;
       align-items: center;
       gap: 12px;
@@ -257,7 +258,7 @@
       border: 1px solid rgba(255,215,0,0.6);
     }
 
-    .audio-control button {
+    .audio-control button, .voice-control button {
       background: transparent;
       border: none;
       color: #ffd700;
@@ -305,92 +306,50 @@
 
     /* ---------- মোবাইল ল্যান্ডস্কেপ (ছোট পর্দা, আড়াআড়ি) ---------- */
     @media screen and (orientation: landscape) and (max-height: 500px) {
-      .live-container {
-        padding: 12px 20px;
-        border-radius: 0;
-      }
+      .live-container { padding: 12px 20px; border-radius: 0; }
       .logo i { font-size: 36px; }
       .logo span { font-size: 28px; }
       .day-badge { font-size: 20px; padding: 6px 16px; }
       .question-text { font-size: 28px; }
-      .options-row {
-        grid-template-columns: repeat(3, 1fr); /* ল্যান্ডস্কেপে ৩ কলাম */
-        gap: 10px;
-        margin: 10px 0;
-      }
-      .option-card {
-        font-size: 20px;
-        padding: 12px 8px;
-        gap: 8px;
-      }
+      .options-row { grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 10px 0; }
+      .option-card { font-size: 20px; padding: 12px 8px; gap: 8px; }
       .option-card i { font-size: 24px; }
       .progress-circle { width: 80px; height: 80px; }
       .inner-circle { width: 66px; height: 66px; }
       .inner-circle span { font-size: 32px; }
       .inner-circle small { font-size: 14px; }
       .shuffle-badge { font-size: 16px; padding: 6px 16px; }
-      .audio-control { padding: 6px 16px; }
-      .audio-control button { font-size: 24px; }
+      .audio-control, .voice-control { padding: 6px 16px; }
+      .audio-control button, .voice-control button { font-size: 24px; }
       .fullscreen-btn { padding: 8px 18px; font-size: 20px; }
       .live-footer { font-size: 16px; }
     }
 
-    /* ---------- ট্যাবলেট/ডেস্কটপ ল্যান্ডস্কেপ (বড় পর্দা) ---------- */
+    /* ---------- ডেস্কটপ/ট্যাবলেট ল্যান্ডস্কেপ ---------- */
     @media screen and (min-width: 1024px) and (orientation: landscape) {
-      .live-container {
-        width: 95vw;
-        height: 90vh;
-        border-radius: 60px;
-        padding: 30px 50px;
-      }
+      .live-container { width: 95vw; height: 90vh; border-radius: 60px; padding: 30px 50px; }
       .logo i { font-size: 60px; }
       .logo span { font-size: 48px; }
       .day-badge { font-size: 32px; padding: 12px 32px; }
       .question-text { font-size: 64px; }
-      .options-row {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 30px;
-        margin: 30px 0;
-      }
-      .option-card {
-        font-size: 40px;
-        padding: 30px 15px;
-        gap: 20px;
-      }
+      .options-row { grid-template-columns: repeat(3, 1fr); gap: 30px; margin: 30px 0; }
+      .option-card { font-size: 40px; padding: 30px 15px; gap: 20px; }
       .option-card i { font-size: 48px; }
       .progress-circle { width: 140px; height: 140px; }
       .inner-circle { width: 118px; height: 118px; }
       .inner-circle span { font-size: 58px; }
       .inner-circle small { font-size: 22px; }
-      .timer-section {
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-      }
+      .timer-section { flex-direction: row; align-items: center; justify-content: space-between; }
       .circular-timer { width: auto; }
       .shuffle-badge { font-size: 24px; padding: 10px 30px; }
       .controls-wrapper { width: auto; }
-      .audio-control { padding: 10px 25px; }
-      .audio-control button { font-size: 40px; }
+      .audio-control, .voice-control { padding: 10px 25px; }
+      .audio-control button, .voice-control button { font-size: 40px; }
       .fullscreen-btn { padding: 18px 36px; font-size: 32px; }
       .live-footer { font-size: 28px; }
     }
 
-    /* ---------- iPhone 12/13/14 পোর্ট্রেট স্পেসিফিক টিউনিং ---------- */
-    @media screen and (width: 390px) and (height: 844px) and (orientation: portrait) {
-      .live-container { padding: 16px 20px; }
-      .question-text { font-size: 30px; }
-      .option-card { font-size: 22px; padding: 16px 10px; }
-    }
-
-    /* ---------- iPhone 12/13/14 ল্যান্ডস্কেপ স্পেসিফিক টিউনিং ---------- */
-    @media screen and (width: 844px) and (height: 390px) and (orientation: landscape) {
-      .live-container { padding: 12px 20px; }
-      .question-text { font-size: 32px; }
-      .option-card { font-size: 22px; padding: 12px; }
-    }
-
-    /* ---------- iOS Safe Area (নচ, হোম ইন্ডিকেটর) ---------- */
+    /* ---------- iOS Safe Area ---------- */
     @supports (padding: max(0px)) {
       .live-container {
         padding-left: max(20px, env(safe-area-inset-left));
@@ -443,12 +402,20 @@
     </div>
     
     <div class="controls-wrapper">
-      <!-- অডিও কন্ট্রোল -->
+      <!-- অডিও কন্ট্রোল (নাশিদ) -->
       <div class="audio-control">
         <button id="audioToggleBtn">
           <i id="audioIcon" class="fas fa-volume-mute"></i>
         </button>
         <span style="color: white;">নাশিদ</span>
+      </div>
+      
+      <!-- ভয়েস কন্ট্রোল (টেক্সট টু স্পিচ) -->
+      <div class="voice-control">
+        <button id="voiceToggleBtn">
+          <i id="voiceIcon" class="fas fa-volume-off"></i>
+        </button>
+        <span style="color: white;">ভয়েস</span>
       </div>
       
       <button class="fullscreen-btn" id="fullscreenBtn">
@@ -471,7 +438,8 @@
 
 <script>
   // ============================================
-  // রমজান ডে ওয়াইজ কুইজ – ১৬:৯ ইউটিউব লাইভ ভার্সন
+  // রমজান ডে ওয়াইজ কুইজ + অটো ভয়েস (TTS)
+  // Google Apps Script API + GitHub Pages
   // ============================================
 
   // ---------- আপনার Apps Script URL এখানে বসান ----------
@@ -486,6 +454,10 @@
   let isAnswered = false;
   let correctAns = '';
 
+  // ---------- গ্লোবাল ভেরিয়েবল ----------
+  let currentRamadanDay = 15; // ডিফল্ট
+  let isVoiceEnabled = false;  // ভয়েস চালু/বন্ধ
+
   // DOM এলিমেন্ট
   const questionEl = document.getElementById('question');
   const optA = document.getElementById('optA');
@@ -497,24 +469,56 @@
   const audioEl = document.getElementById('backgroundAudio');
   const audioToggleBtn = document.getElementById('audioToggleBtn');
   const audioIcon = document.getElementById('audioIcon');
+  const voiceToggleBtn = document.getElementById('voiceToggleBtn');
+  const voiceIcon = document.getElementById('voiceIcon');
 
-  // ---------- রমজানের দিন নির্ণয় (আনুমানিক) ----------
-  function getRamadanDay() {
-    const now = new Date();
-    const ramadanStart = new Date(now.getFullYear(), 2, 11);
-    const diffDays = Math.floor((now - ramadanStart) / (1000 * 3600 * 24)) + 1;
-    if (diffDays >= 1 && diffDays <= 30) return diffDays;
-    return 15;
+  // ---------- স্পিচ সিন্থেসিস (টেক্সট টু স্পিচ) ----------
+  function speakText(text) {
+    if (!isVoiceEnabled) return;
+    if (!window.speechSynthesis) {
+      console.warn('Speech synthesis not supported');
+      return;
+    }
+    // কোনো চলমান স্পিচ থামাও
+    window.speechSynthesis.cancel();
+    
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'bn-BD'; // বাংলা (বাংলাদেশ)
+    utterance.rate = 0.9;      // একটু ধীরে
+    utterance.pitch = 1;
+    utterance.volume = 1;
+    
+    // বাংলা ভয়েস খোঁজার চেষ্টা
+    const voices = window.speechSynthesis.getVoices();
+    const bnVoice = voices.find(v => v.lang.includes('bn') || v.lang.includes('ben'));
+    if (bnVoice) {
+      utterance.voice = bnVoice;
+    } else {
+      // বাংলা ভয়েস না পেলে ইংরেজি ভয়েস ব্যবহার করবে, কিন্তু বাংলা টেক্সট পড়বে (কিছুটা অদ্ভুত লাগতে পারে)
+      utterance.lang = 'en-US';
+    }
+    
+    window.speechSynthesis.speak(utterance);
   }
 
-  function updateRamadanBadge() {
-    const day = getRamadanDay();
-    ramadanEl.innerHTML = `<i class="fas fa-calendar-alt"></i> রমজান ${day}`;
-  }
-  updateRamadanBadge();
-  setInterval(updateRamadanBadge, 3600000);
+  // ---------- ভয়েস টগল ----------
+  voiceToggleBtn.addEventListener('click', function() {
+    isVoiceEnabled = !isVoiceEnabled;
+    if (isVoiceEnabled) {
+      voiceIcon.className = 'fas fa-volume-up';
+      // যদি প্রশ্ন লোড করা থাকে, তাহলে সেটি পড়ে শোনাও
+      if (quizData.length > 0) {
+        const q = quizData[currentIdx];
+        let speechText = q.question + '। অপশন ক: ' + q.optionA + '। অপশন খ: ' + q.optionB + '। অপশন গ: ' + q.optionC;
+        speakText(speechText);
+      }
+    } else {
+      voiceIcon.className = 'fas fa-volume-off';
+      window.speechSynthesis.cancel();
+    }
+  });
 
-  // ---------- অডিও মিউট/আনমিউট ----------
+  // ---------- অডিও কন্ট্রোল (নাশিদ) ----------
   let isAudioMuted = true;
   audioToggleBtn.addEventListener('click', function() {
     if (audioEl.muted) {
@@ -527,6 +531,15 @@
     }
   });
 
+  // ---------- রমজান ব্যাজ আপডেট (সীটের ডাটা থেকে) ----------
+  function updateRamadanBadge(day) {
+    if (day) {
+      ramadanEl.innerHTML = `<i class="fas fa-calendar-alt"></i> রমজান ${day}`;
+    } else {
+      ramadanEl.innerHTML = `<i class="fas fa-calendar-alt"></i> রমজান ১৫`; // fallback
+    }
+  }
+
   // ---------- API ফেচ ----------
   async function fetchQuizzes() {
     try {
@@ -537,14 +550,31 @@
         questionEl.innerText = '❌ ' + allQuizData.error;
         return;
       }
+
+      // 'day' কলাম আছে কিনা চেক
       const hasDayColumn = allQuizData.length > 0 && allQuizData[0].hasOwnProperty('day');
+      
       if (hasDayColumn) {
-        const today = getRamadanDay();
-        quizData = allQuizData.filter(q => parseInt(q.day) === today);
-        if (quizData.length === 0) quizData = [...allQuizData];
+        // প্রথম প্রশ্নের day ভ্যালু নিয়ে সেট করি (ধরে নিই সব প্রশ্নের দিন একই)
+        const firstDay = parseInt(allQuizData[0].day);
+        if (!isNaN(firstDay) && firstDay >= 1 && firstDay <= 30) {
+          currentRamadanDay = firstDay;
+        }
+        // ফিল্টার: শুধু currentRamadanDay এর প্রশ্ন দেখাও
+        quizData = allQuizData.filter(q => parseInt(q.day) === currentRamadanDay);
+        if (quizData.length === 0) {
+          // যদি ঐ দিনের কোনো প্রশ্ন না থাকে, সব দেখাও
+          quizData = [...allQuizData];
+          console.warn(`No quiz for day ${currentRamadanDay}, showing all.`);
+        }
       } else {
+        // day কলাম নেই, সব ডাটা দেখাও
         quizData = [...allQuizData];
       }
+
+      // রমজান ব্যাজ আপডেট
+      updateRamadanBadge(currentRamadanDay);
+
       if (quizData.length) {
         shuffleArray(quizData);
         showQuestion(0);
@@ -558,6 +588,7 @@
     }
   }
 
+  // ---------- শাফল ----------
   function shuffleArray(arr) {
     for (let i = arr.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -565,6 +596,7 @@
     }
   }
 
+  // ---------- প্রশ্ন দেখান ----------
   function showQuestion(index) {
     if (!quizData.length) return;
     const q = quizData[index];
@@ -575,6 +607,12 @@
     correctAns = (q.correct || 'A').toUpperCase();
     removeHighlights();
     isAnswered = false;
+
+    // ভয়েস চালু থাকলে প্রশ্ন ও অপশন পড়ে শোনাও
+    if (isVoiceEnabled) {
+      let speechText = q.question + '। অপশন এ: ' + q.optionA + '। অপশন বি: ' + q.optionB + '। অপশন সি: ' + q.optionC;
+      speakText(speechText);
+    }
   }
 
   function removeHighlights() {
@@ -583,13 +621,24 @@
     optC.classList.remove('option-correct');
   }
 
+  // ---------- সঠিক উত্তর দেখান ----------
   function showCorrectAnswer() {
     if (isAnswered) return;
     isAnswered = true;
     const el = document.getElementById(`opt${correctAns}`);
     if (el) el.classList.add('option-correct');
+
+    // ভয়েস চালু থাকলে সঠিক উত্তর পড়ে শোনাও
+    if (isVoiceEnabled) {
+      let answerText = '';
+      if (correctAns === 'A') answerText = 'সঠিক উত্তর অপশন এ: ' + optA.innerText.replace('A)', '').trim();
+      else if (correctAns === 'B') answerText = 'সঠিক উত্তর অপশন বি: ' + optB.innerText.replace('B)', '').trim();
+      else if (correctAns === 'C') answerText = 'সঠিক উত্তর অপশন সি: ' + optC.innerText.replace('C)', '').trim();
+      speakText(answerText);
+    }
   }
 
+  // ---------- টাইমার ----------
   function startTimer() {
     if (timerInterval) clearInterval(timerInterval);
     timeLeft = TOTAL_TIME;
@@ -618,6 +667,7 @@
     startTimer();
   }
 
+  // ---------- ফুলস্ক্রিন ----------
   function toggleFullscreen() {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen();
@@ -627,11 +677,16 @@
   }
   document.getElementById('fullscreenBtn').addEventListener('click', toggleFullscreen);
 
-  // ---------- শুরু ----------
+  // ---------- শুরু করুন ----------
   if (API_URL !== "YOUR_API_URL") {
     fetchQuizzes();
   } else {
     questionEl.innerText = '🔧 API_URL সেট করুন!';
+  }
+
+  // ---------- স্পিচ সিন্থেসিস ভয়েস লোড হওয়া নিশ্চিত করা ----------
+  if (window.speechSynthesis) {
+    window.speechSynthesis.getVoices(); // কিছু ব্রাউজারে অ্যাসিঙ্ক
   }
 </script>
 </body>
