@@ -472,34 +472,62 @@
   const voiceToggleBtn = document.getElementById('voiceToggleBtn');
   const voiceIcon = document.getElementById('voiceIcon');
 
-  // ---------- স্পিচ সিন্থেসিস (টেক্সট টু স্পিচ) ----------
   function speakText(text) {
-    if (!isVoiceEnabled) return;
-    if (!window.speechSynthesis) {
-      console.warn('Speech synthesis not supported');
-      return;
-    }
-    // কোনো চলমান স্পিচ থামাও
-    window.speechSynthesis.cancel();
-    
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = 'bn-BD'; // বাংলা (বাংলাদেশ)
-    utterance.rate = 0.9;      // একটু ধীরে
-    utterance.pitch = 1;
-    utterance.volume = 1;
-    
-    // বাংলা ভয়েস খোঁজার চেষ্টা
-    const voices = window.speechSynthesis.getVoices();
-    const bnVoice = voices.find(v => v.lang.includes('bn') || v.lang.includes('ben'));
-    if (bnVoice) {
-      utterance.voice = bnVoice;
-    } else {
-      // বাংলা ভয়েস না পেলে ইংরেজি ভয়েস ব্যবহার করবে, কিন্তু বাংলা টেক্সট পড়বে (কিছুটা অদ্ভুত লাগতে পারে)
-      utterance.lang = 'en-US';
-    }
-    
-    window.speechSynthesis.speak(utterance);
+  if (!isVoiceEnabled) return;
+  window.speechSynthesis.cancel(); // আগের স্পিচ থামাও
+
+  const utterance = new SpeechSynthesisUtterance(text);
+  
+  // ১. বাংলা সাপোর্ট করে এমন ভয়েস লোড হওয়া নিশ্চিত করা
+  let voices = window.speechSynthesis.getVoices();
+  if (voices.length === 0) {
+    // কিছু ব্রাউজারে অ্যাসিঙ্কভাবে লোড হয়
+    window.speechSynthesis.onvoiceschanged = () => {
+      voices = window.speechSynthesis.getVoices();
+      selectAndSpeak(voices, utterance, text);
+    };
+  } else {
+    selectAndSpeak(voices, utterance, text);
   }
+}
+
+function selectAndSpeak(voices, utterance, text) {
+  // ২. বাংলা ভয়েস খোঁজা, অগ্রাধিকার: পুরুষ > উচ্চ-মান > নারী
+  const bnVoices = voices.filter(v => 
+    v.lang.includes('bn') || v.lang.includes('ben') || v.lang.includes('Bangla')
+  );
+  
+  if (bnVoices.length > 0) {
+    // ৩. প্রায়োরিটি: পুরুষ > Microsoft Natural > অন্যরা
+    const maleVoice = bnVoices.find(v => v.name.includes('Male') || v.name.includes('পুরুষ') || v.name.includes('Mr.'));
+    const msVoice = bnVoices.find(v => v.name.includes('Microsoft') && v.name.includes('Natural'));
+    
+    if (maleVoice) {
+      utterance.voice = maleVoice;
+    } else if (msVoice) {
+      utterance.voice = msVoice;
+    } else {
+      // ৪. নিম্নমানের ভয়েস বাদ দিয়ে নির্বাচন
+      const filtered = bnVoices.filter(v => 
+        !v.name.includes('Legacy') && 
+        !v.name.includes('Mobile') && 
+        !v.name.includes('Compact')
+      );
+      utterance.voice = filtered[0] || bnVoices[0];
+    }
+  } else {
+    // ৫. বাংলা না পেলে হিন্দি বা ইন্ডিয়ান ইংলিশ (কাছে কাছি)
+    const hiVoices = voices.find(v => v.lang.includes('hi'));
+    const enInVoices = voices.find(v => v.lang.includes('en-IN'));
+    utterance.voice = hiVoices || enInVoices || voices[0];
+    utterance.lang = utterance.voice?.lang || 'bn-BD';
+  }
+  
+  utterance.rate = 0.85; // ধীর গতি
+  utterance.pitch = 1.1;  // পুরুষ কণ্ঠের জন্য পিচ কম
+  
+  window.speechSynthesis.speak(utterance);
+}
 
   // ---------- ভয়েস টগল ----------
   voiceToggleBtn.addEventListener('click', function() {
