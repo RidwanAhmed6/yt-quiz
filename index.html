@@ -285,6 +285,7 @@
       100% { opacity: 1; transform: translateY(0); }
     }
 
+    /* ===== ডেস্কটপ মিডিয়া (ছোট স্ক্রিন ল্যাপটপ) ===== */
     @media (max-width: 1200px) {
       .live-container { padding: 25px 35px; }
       .logo span { font-size: 40px; }
@@ -293,10 +294,114 @@
       .option-card i { font-size: 40px; }
     }
 
-    @media (max-width: 900px) {
-      .logo span { font-size: 32px; }
-      .question-text { font-size: 44px; }
-      .option-card { font-size: 28px; }
+    /* ===== মোবাইল ও ট্যাবলেটের জন্য আপডেটেড রেসপনসিভ ===== */
+    @media screen and (max-width: 768px) {
+      .live-container {
+        width: 100vw;
+        height: 100vh;
+        border-radius: 0;
+        padding: 16px 20px;
+        max-width: 100%;
+      }
+
+      .logo i {
+        font-size: 36px;
+      }
+
+      .logo span {
+        font-size: 28px;
+      }
+
+      .day-badge {
+        font-size: 20px;
+        padding: 8px 16px;
+      }
+
+      .question-text {
+        font-size: 32px !important;
+        line-height: 1.3;
+      }
+
+      .options-row {
+        grid-template-columns: 1fr;  /* অপশন এক নিচে এক */
+        gap: 15px;
+        margin: 15px 0;
+      }
+
+      .option-card {
+        font-size: 24px;
+        padding: 18px 12px;
+        gap: 10px;
+      }
+
+      .option-card i {
+        font-size: 28px;
+      }
+
+      .progress-circle {
+        width: 100px;
+        height: 100px;
+      }
+
+      .inner-circle {
+        width: 82px;
+        height: 82px;
+      }
+
+      .inner-circle span {
+        font-size: 40px;
+      }
+
+      .inner-circle small {
+        font-size: 16px;
+      }
+
+      .audio-control {
+        padding: 6px 15px;
+      }
+
+      .audio-control button {
+        font-size: 28px;
+      }
+
+      .fullscreen-btn {
+        padding: 12px 20px;
+        font-size: 22px;
+      }
+
+      .shuffle-badge {
+        font-size: 18px;
+        padding: 6px 18px;
+      }
+
+      .live-footer {
+        font-size: 18px;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+    }
+
+    /* ===== খুব ছোট ডিভাইস (৪৮০px নিচে) ===== */
+    @media screen and (max-width: 480px) {
+      .question-text {
+        font-size: 26px !important;
+      }
+
+      .option-card {
+        font-size: 20px;
+        padding: 14px 10px;
+      }
+
+      .timer-section {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+      }
+
+      .circular-timer {
+        width: 100%;
+        justify-content: space-between;
+      }
     }
 
     body, html { overflow: hidden; }
@@ -377,11 +482,11 @@
   // =========================================
 
   // ---------- আপনার Apps Script URL এখানে বসান ----------
-  const API_URL = "https://script.google.com/macros/s/AKfycbwlv-PKiaC-J5U3P05xo_IufFtt6yXl3o3Jd0ruD6kJMoYuQBf-xreqVITFtEnTnReC/exec"; 
+  const API_URL = "https://script.google.com/macros/s/AKfycbyw0lNMLsO4lx7vGf6OPHz8Kai3prfoSn7rFH22kvhjouUXJTr528U_HUHeOxxFtSj3tA/exec"; // 👈 এখানে আপনার URL লিখুন
 
   const TOTAL_TIME = 15;
-  let allQuizData = [];        // API থেকে পাওয়া সকল কুইজ
-  let quizData = [];           // আজকের রমজান দিনের ফিল্টারকৃত কুইজ
+  let allQuizData = [];
+  let quizData = [];
   let currentIdx = 0;
   let timerInterval = null;
   let timeLeft = TOTAL_TIME;
@@ -403,7 +508,6 @@
   // ---------- রমজানের দিন নির্ণয় (আনুমানিক) ----------
   function getRamadanDay() {
     const now = new Date();
-    // ধরে নিচ্ছি রমজান শুরু মার্চ ১১ (প্রতি বছর পরিবর্তন হবে, আপনি চাইলে সঠিক তারিখ সেট করুন)
     const ramadanStart = new Date(now.getFullYear(), 2, 11); // 11th March
     const diffDays = Math.floor((now - ramadanStart) / (1000 * 3600 * 24)) + 1;
     if (diffDays >= 1 && diffDays <= 30) return diffDays;
@@ -415,17 +519,16 @@
     ramadanEl.innerHTML = `<i class="fas fa-calendar-alt"></i> রমজান ${day}`;
   }
   updateRamadanBadge();
-  setInterval(updateRamadanBadge, 3600000); // প্রতি ঘণ্টায় আপডেট
+  setInterval(updateRamadanBadge, 3600000);
 
   // ---------- অডিও কন্ট্রোল (মিউট/আনমিউট) ----------
-  let isAudioMuted = true; // শুরুতে মিউটেড
+  let isAudioMuted = true;
 
   audioToggleBtn.addEventListener('click', function() {
     if (audioEl.muted) {
       audioEl.muted = false;
       audioIcon.className = 'fas fa-volume-up';
       isAudioMuted = false;
-      // যদি পজড থাকে তাহলে প্লে করার চেষ্টা
       if (audioEl.paused) {
         audioEl.play().catch(e => console.log('Play failed:', e));
       }
@@ -436,28 +539,29 @@
     }
   });
 
-  // প্রথমবার ইউজার ক্লিক না করা পর্যন্ত মিউটেড থাকবে, কিন্তু অটোপ্লে muted অবস্থায় হয়ে যাবে।
-
   // ---------- API থেকে ডাটা লোড ----------
   async function fetchQuizzes() {
     try {
       const res = await fetch(API_URL);
+      if (!res.ok) throw new Error(`HTTP error ${res.status}`);
       allQuizData = await res.json();
       
-      // শীটে 'day' কলাম আছে কিনা চেক করুন (প্রথম অবজেক্টে day প্রপার্টি আছে?)
+      // API যদি error ফিরিয়ে দেয় (যেমন শীট নেই)
+      if (allQuizData.error) {
+        questionEl.innerText = '❌ ' + allQuizData.error;
+        return;
+      }
+
       const hasDayColumn = allQuizData.length > 0 && allQuizData[0].hasOwnProperty('day');
       
       if (hasDayColumn) {
-        // আজকের দিন অনুযায়ী ফিল্টার
         const today = getRamadanDay();
         quizData = allQuizData.filter(q => parseInt(q.day) === today);
         if (quizData.length === 0) {
-          // আজকের জন্য কোনো কুইজ না থাকলে সব কুইজ দেখান (ফলব্যাক)
           quizData = [...allQuizData];
           console.warn(`No quiz for day ${today}, showing all.`);
         }
       } else {
-        // 'day' কলাম নেই -> সব ডাটা ব্যবহার করুন
         quizData = [...allQuizData];
       }
 
@@ -474,7 +578,6 @@
     }
   }
 
-  // ---------- শাফল ----------
   function shuffleArray(arr) {
     for (let i = arr.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -482,7 +585,6 @@
     }
   }
 
-  // ---------- প্রশ্ন দেখান ----------
   function showQuestion(index) {
     if (!quizData.length) return;
     const q = quizData[index];
@@ -501,7 +603,6 @@
     optC.classList.remove('option-correct');
   }
 
-  // ---------- সঠিক উত্তর দেখান ----------
   function showCorrectAnswer() {
     if (isAnswered) return;
     isAnswered = true;
@@ -509,7 +610,6 @@
     if (el) el.classList.add('option-correct');
   }
 
-  // ---------- টাইমার ----------
   function startTimer() {
     if (timerInterval) clearInterval(timerInterval);
     timeLeft = TOTAL_TIME;
@@ -545,7 +645,6 @@
     startTimer();
   }
 
-  // ---------- ফুলস্ক্রিন ----------
   function toggleFullscreen() {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen();
@@ -554,17 +653,13 @@
     }
   }
 
-  // ---------- ইভেন্ট লিসেনার ----------
   document.getElementById('fullscreenBtn').addEventListener('click', toggleFullscreen);
 
-  // ---------- শুরু করুন ----------
   if (API_URL !== "YOUR_API_URL") {
     fetchQuizzes();
   } else {
     questionEl.innerText = '🔧 API_URL সেট করুন!';
   }
-
-  // অডিও মিউটেড অবস্থায় অটোপ্লে হয়ে যাবে। ইউজার বাটন ক্লিক করলে আনমিউট হবে।
 </script>
 
 <!-- API URL সেট না করলে সতর্কতা -->
