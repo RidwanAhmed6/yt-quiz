@@ -2,14 +2,14 @@
 <html lang="bn">
 <head>
   <meta charset="UTF-8">
-  <!-- iPhone 12 সহ সব ডিভাইসের জন্য পারফেক্ট ভিউপোর্ট -->
-  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes, viewport-fit=cover">
-  <title>AudioQalb কুইজ | রমজান ডে ওয়াইজ | ১৬:৯</title>
+  <!-- পারফেক্ট ভিউপোর্ট: ডায়নামিক ভিউপোর্ট হাইট (dvh) + সেফ এরিয়া -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes, viewport-fit=cover">
+  <title>আলোকিত কুইজ | রমজান ডে ওয়াইজ | ১৬:৯</title>
   <!-- Google Fonts & Font Awesome 6 -->
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
-    /* ---------- গ্লোবাল রিসেট ---------- */
+    /* ----- গ্লোবাল রিসেট ----- */
     * {
       margin: 0;
       padding: 0;
@@ -25,14 +25,12 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
-      position: fixed; /* iOS এ স্ক্রল আটকাতে */
     }
 
-    /* ইসলামিক জ্যামিতিক প্যাটার্ন (অতি সূক্ষ্ম) */
+    /* ইসলামিক প্যাটার্ন ওভারলে */
     body::after {
       content: "";
-      position: absolute;
+      position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
       background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.08"><path fill="%23ffd700" d="M50 0L62 35H97L72 55L84 90L50 70L16 90L28 55L3 35H38L50 0Z"/></svg>');
       background-size: 80px 80px;
@@ -40,24 +38,24 @@
       z-index: 1;
     }
 
-    /* ---------- মেইন কন্টেইনার (গ্লাসমরফিজম) ---------- */
+    /* ----- মেইন কন্টেইনার (মোবাইল ফার্স্ট) ----- */
     .live-container {
       position: relative;
       z-index: 10;
-      width: 95vw;
+      width: 100%;
       max-width: 1600px;
-      height: 85vh;
+      height: 100%; /* পূর্ণ উচ্চতা */
+      max-height: 100%;
       background: rgba(8, 12, 25, 0.75);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border: 2px solid rgba(255, 215, 0, 0.35);
-      border-radius: 60px;
       box-shadow: 0 30px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,215,0,0.2) inset;
       display: flex;
       flex-direction: column;
-      padding: 30px 50px;
+      padding: 20px 25px; /* মোবাইলের জন্য কম প্যাডিং */
       animation: borderGlow 4s infinite alternate;
-      transition: padding 0.3s ease;
+      transition: padding 0.3s ease, border-radius 0.3s ease;
     }
 
     @keyframes borderGlow {
@@ -65,42 +63,43 @@
       100% { border-color: rgba(255,215,0,0.6); box-shadow: 0 40px 80px rgba(255,215,0,0.2), 0 0 0 3px rgba(255,215,0,0.2) inset; }
     }
 
-    /* ---------- হেডার ---------- */
+    /* ----- হেডার ----- */
     .live-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-bottom: 15px;
+      padding-bottom: 12px;
       border-bottom: 2px dashed rgba(255,215,0,0.4);
-      margin-bottom: 20px;
+      margin-bottom: 16px;
+      flex-shrink: 0; /* সংকোচন আটকায় */
     }
 
     .logo {
       display: flex;
       align-items: center;
-      gap: 20px;
+      gap: 12px;
     }
 
     .logo i {
-      font-size: 60px;
+      font-size: 48px;
       color: #ffd700;
       text-shadow: 0 0 30px #ffd700;
     }
 
     .logo span {
-      font-size: 48px;
+      font-size: 36px;
       font-weight: 900;
       background: linear-gradient(145deg, #ffe082, #ffb300);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      letter-spacing: 2px;
+      letter-spacing: 1px;
     }
 
     .day-badge {
       background: rgba(0,0,0,0.6);
-      padding: 12px 32px;
-      border-radius: 60px;
-      font-size: 32px;
+      padding: 8px 20px;
+      border-radius: 40px;
+      font-size: 24px;
       font-weight: 700;
       color: #ffd700;
       border: 1px solid #ffd700;
@@ -109,22 +108,23 @@
       white-space: nowrap;
     }
 
-    /* ---------- প্রশ্ন এলাকা ---------- */
+    /* ----- প্রশ্ন এলাকা (ফ্লেক্স গ্রো নেয়) ----- */
     .question-area {
-      flex: 1;
+      flex: 1 1 auto; /* অবশিষ্ট জায়গা নেবে */
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       background: rgba(0,0,0,0.25);
-      border-radius: 60px;
-      margin: 20px 0;
-      padding: 30px 40px;
+      border-radius: 40px;
+      margin: 10px 0;
+      padding: 20px;
       border: 1px solid rgba(255,215,0,0.2);
+      min-height: 0; /* ফ্লেক্স চাইল্ডের জন্য জরুরি */
     }
 
     .question-text {
-      font-size: 64px;
+      font-size: 32px;
       font-weight: 900;
       line-height: 1.4;
       text-align: center;
@@ -134,67 +134,66 @@
       animation: fadeSlide 0.8s ease;
     }
 
-    /* ---------- অপশন গ্রিড (ডিফল্ট: তিন কলাম) ---------- */
+    /* ----- অপশন গ্রিড (মোবাইলে ১ কলাম) ----- */
     .options-row {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 30px;
+      grid-template-columns: 1fr; /* মোবাইল ডিফল্ট */
+      gap: 15px;
       width: 100%;
-      margin: 30px 0;
+      margin: 15px 0;
+      flex-shrink: 0; /* সংকুচিত না হওয়া */
     }
 
     .option-card {
       background: linear-gradient(145deg, #16202e, #0c111b);
       border: 2px solid rgba(255,215,0,0.3);
-      border-radius: 40px;
-      padding: 30px 15px;
-      font-size: 40px;
+      border-radius: 30px;
+      padding: 18px 12px;
+      font-size: 24px;
       font-weight: 700;
       color: white;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 20px;
-      box-shadow: 0 15px 0 #00000055, 0 0 30px rgba(0,0,0,0.5);
+      gap: 12px;
+      box-shadow: 0 10px 0 #00000055, 0 0 30px rgba(0,0,0,0.5);
       transition: all 0.2s;
       text-shadow: 0 2px 5px black;
     }
 
     .option-card i {
       color: #ffd700;
-      font-size: 48px;
+      font-size: 28px;
       filter: drop-shadow(0 0 8px gold);
-    }
-
-    .option-card:hover {
-      transform: scale(1.02);
-      border-color: #ffd700;
-      background: rgba(255,215,0,0.15);
     }
 
     .option-correct {
       background: #1e4a1e !important;
       border-color: #ffd700 !important;
-      box-shadow: 0 0 60px #2e7d32, 0 15px 0 #0a2e0a !important;
+      box-shadow: 0 0 60px #2e7d32, 0 10px 0 #0a2e0a !important;
     }
 
-    /* ---------- টাইমার সেকশন ---------- */
+    /* ----- টাইমার সেকশন ----- */
     .timer-section {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 10px;
+      flex-direction: column; /* মোবাইলে কলাম */
+      align-items: flex-start;
+      gap: 15px;
+      margin-top: 5px;
+      flex-shrink: 0;
     }
 
     .circular-timer {
       display: flex;
       align-items: center;
-      gap: 30px;
+      gap: 20px;
+      width: 100%;
+      justify-content: space-between;
     }
 
     .progress-circle {
-      width: 140px;
-      height: 140px;
+      width: 100px;
+      height: 100px;
       border-radius: 50%;
       background: conic-gradient(#ffd700 0deg, #2a2a2a 0deg);
       display: flex;
@@ -205,8 +204,8 @@
     }
 
     .inner-circle {
-      width: 118px;
-      height: 118px;
+      width: 82px;
+      height: 82px;
       border-radius: 50%;
       background: #0a0f1e;
       display: flex;
@@ -217,7 +216,7 @@
     }
 
     .inner-circle span {
-      font-size: 58px;
+      font-size: 40px;
       font-weight: 900;
       color: #ffd700;
       line-height: 1;
@@ -225,16 +224,33 @@
 
     .inner-circle small {
       color: rgba(255,255,255,0.9);
-      font-size: 22px;
+      font-size: 16px;
     }
 
-    /* ---------- অডিও ও ফুলস্ক্রিন কন্ট্রোল ---------- */
+    .shuffle-badge {
+      background: rgba(255,215,0,0.1);
+      padding: 8px 20px;
+      border-radius: 50px;
+      border: 1px dashed gold;
+      font-size: 20px;
+      white-space: nowrap;
+    }
+
+    /* ----- অডিও ও ফুলস্ক্রিন কন্ট্রোল ----- */
+    .controls-wrapper {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+      width: 100%;
+      justify-content: flex-end;
+    }
+
     .audio-control {
       display: flex;
       align-items: center;
-      gap: 15px;
+      gap: 12px;
       background: rgba(0,0,0,0.5);
-      padding: 10px 25px;
+      padding: 8px 20px;
       border-radius: 60px;
       border: 1px solid rgba(255,215,0,0.6);
     }
@@ -243,28 +259,23 @@
       background: transparent;
       border: none;
       color: #ffd700;
-      font-size: 40px;
+      font-size: 28px;
       cursor: pointer;
       transition: 0.2s;
-    }
-
-    .audio-control button:hover {
-      color: white;
-      text-shadow: 0 0 15px gold;
     }
 
     .fullscreen-btn {
       background: rgba(0,0,0,0.5);
       border: 2px solid #ffd700;
       color: #ffd700;
-      padding: 18px 36px;
+      padding: 10px 24px;
       border-radius: 60px;
-      font-size: 32px;
+      font-size: 24px;
       font-weight: 600;
       cursor: pointer;
       backdrop-filter: blur(6px);
       display: flex;
-      gap: 15px;
+      gap: 10px;
       align-items: center;
       transition: 0.3s;
     }
@@ -275,21 +286,15 @@
       border-color: white;
     }
 
-    /* ---------- ফুটার ---------- */
+    /* ----- ফুটার ----- */
     .live-footer {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-top: 20px;
+      margin-top: 10px;
       color: rgba(255,215,0,0.8);
-      font-size: 28px;
-    }
-
-    .shuffle-badge {
-      background: rgba(255,215,0,0.1);
-      padding: 10px 30px;
-      border-radius: 50px;
-      border: 1px dashed gold;
+      font-size: 20px;
+      flex-shrink: 0;
     }
 
     @keyframes fadeSlide {
@@ -297,80 +302,73 @@
       100% { opacity: 1; transform: translateY(0); }
     }
 
-    /* ---------- ডেস্কটপ/ল্যাপটপ (ছোট স্ক্রিন) ---------- */
-    @media (max-width: 1200px) {
-      .live-container { padding: 25px 35px; }
-      .logo span { font-size: 40px; }
-      .question-text { font-size: 54px; }
-      .option-card { font-size: 32px; padding: 20px; }
-      .option-card i { font-size: 40px; }
-    }
-
-    /* ---------- মোবাইল ও ট্যাবলেট (ওরিয়েন্টেশন বেসড) ---------- */
-
-    /* পোর্ট্রেট (খাড়া) – সর্বোচ্চ ৫০০px */
-    @media screen and (max-width: 500px), (orientation: portrait) {
+    /* ---------- ডেস্কটপ / ল্যান্ডস্কেপ ট্যাবলেট / ইউটিউব ১৬:৯ ---------- */
+    @media screen and (min-width: 768px) and (orientation: landscape) {
       .live-container {
-        width: 100vw;
-        height: 100vh;
-        border-radius: 0;
-        padding: 16px 20px;
-        max-width: 100%;
+        width: 95vw;
+        height: 85vh;
+        border-radius: 60px;
+        padding: 30px 50px;
       }
-      .logo i { font-size: 36px; }
-      .logo span { font-size: 28px; }
-      .day-badge { font-size: 20px; padding: 8px 16px; }
-      .question-text { font-size: 32px !important; line-height: 1.3; }
+      .logo i { font-size: 60px; }
+      .logo span { font-size: 48px; }
+      .day-badge { font-size: 32px; padding: 12px 32px; }
+      .question-text { font-size: 64px; }
       .options-row {
-        grid-template-columns: 1fr; /* এক কলাম */
-        gap: 15px;
-        margin: 15px 0;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+        margin: 30px 0;
       }
-      .option-card { font-size: 24px; padding: 18px 12px; gap: 10px; }
-      .option-card i { font-size: 28px; }
-      .progress-circle { width: 100px; height: 100px; }
-      .inner-circle { width: 82px; height: 82px; }
-      .inner-circle span { font-size: 40px; }
-      .inner-circle small { font-size: 16px; }
-      .audio-control { padding: 6px 15px; }
-      .audio-control button { font-size: 28px; }
-      .fullscreen-btn { padding: 12px 20px; font-size: 22px; }
-      .shuffle-badge { font-size: 18px; padding: 6px 18px; }
-      .live-footer { font-size: 18px; flex-wrap: wrap; gap: 10px; }
-    }
-
-    /* ল্যান্ডস্কেপ (আড়াআড়ি) – বিশেষত iPhone 12 ও অন্যান্য */
-    @media screen and (orientation: landscape) and (max-width: 900px) {
-      .options-row {
-        grid-template-columns: repeat(3, 1fr) !important; /* তিন কলাম */
+      .option-card {
+        font-size: 40px;
+        padding: 30px 15px;
         gap: 20px;
       }
-      .question-text { font-size: 42px !important; }
-      .option-card { font-size: 28px; padding: 20px; }
-      .timer-section { flex-direction: row; align-items: center; }
+      .option-card i { font-size: 48px; }
+      .progress-circle { width: 140px; height: 140px; }
+      .inner-circle { width: 118px; height: 118px; }
+      .inner-circle span { font-size: 58px; }
+      .inner-circle small { font-size: 22px; }
+      .timer-section {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
       .circular-timer { width: auto; }
+      .shuffle-badge { font-size: 24px; padding: 10px 30px; }
+      .controls-wrapper { width: auto; }
+      .audio-control { padding: 10px 25px; }
+      .audio-control button { font-size: 40px; }
+      .fullscreen-btn { padding: 18px 36px; font-size: 32px; }
+      .live-footer { font-size: 28px; }
     }
 
-    /* ---------- iPhone 12 / 13 / 14 স্পেসিফিক ফাইন-টিউনিং ---------- */
+    /* ---------- iPhone 12/13/14 পোর্ট্রেট স্পেসিফিক টিউনিং ---------- */
     @media screen and (width: 390px) and (height: 844px) and (orientation: portrait) {
-      .question-text { font-size: 32px; }
-      .option-card { font-size: 24px; }
-    }
-    @media screen and (width: 844px) and (height: 390px) and (orientation: landscape) {
-      .question-text { font-size: 42px; }
-      .option-card { font-size: 28px; }
+      .live-container { padding: 16px 20px; }
+      .question-text { font-size: 30px; }
+      .option-card { font-size: 22px; padding: 16px 10px; }
     }
 
-    /* ---------- iOS Safe Area (নচ/হোম ইন্ডিকেটর) ---------- */
+    /* ---------- iPhone 12/13/14 ল্যান্ডস্কেপ স্পেসিফিক টিউনিং ---------- */
+    @media screen and (width: 844px) and (height: 390px) and (orientation: landscape) {
+      .live-container { padding: 20px 30px; }
+      .question-text { font-size: 42px; }
+      .option-card { font-size: 28px; padding: 20px; }
+    }
+
+    /* ---------- iOS Safe Area (নচ, হোম ইন্ডিকেটর) ---------- */
     @supports (padding: max(0px)) {
       .live-container {
-        padding-left: max(30px, env(safe-area-inset-left));
-        padding-right: max(30px, env(safe-area-inset-right));
-        padding-bottom: max(20px, env(safe-area-inset-bottom));
+        padding-left: max(20px, env(safe-area-inset-left));
+        padding-right: max(20px, env(safe-area-inset-right));
+        padding-bottom: max(16px, env(safe-area-inset-bottom));
       }
     }
 
+    /* আর কোনো ওভারফ্লো না */
     body, html { overflow: hidden; }
+    .live-container { overflow: hidden; }
   </style>
 </head>
 <body>
@@ -392,17 +390,17 @@
     <div class="question-text" id="question">প্রশ্ন লোড হচ্ছে…</div>
   </div>
 
-  <!-- অপশন (৩টি) -->
+  <!-- অপশন (৩টি) - মোবাইলে ১ কলাম, ডেস্কটপে ৩ কলাম -->
   <div class="options-row" id="optionsRow">
     <div class="option-card" id="optA"><i class="fas fa-cube"></i> A) ...</div>
     <div class="option-card" id="optB"><i class="fas fa-cube"></i> B) ...</div>
     <div class="option-card" id="optC"><i class="fas fa-cube"></i> C) ...</div>
   </div>
 
-  <!-- টাইমার + অডিও + ফুলস্ক্রিন -->
+  <!-- টাইমার + কন্ট্রোলস -->
   <div class="timer-section">
     <div class="circular-timer">
-      <div class="progress-circle" id="progressCircle" style="background: conic-gradient(#ffd700 0deg, #2a2a2a 0deg);">
+      <div class="progress-circle" id="progressCircle">
         <div class="inner-circle">
           <span id="timerNumber">15</span>
           <small>সেকেন্ড</small>
@@ -413,13 +411,13 @@
       </div>
     </div>
     
-    <div style="display: flex; gap: 20px; align-items: center;">
-      <!-- অডিও কন্ট্রোল (আনমিউট) -->
+    <div class="controls-wrapper">
+      <!-- অডিও কন্ট্রোল -->
       <div class="audio-control">
         <button id="audioToggleBtn">
           <i id="audioIcon" class="fas fa-volume-mute"></i>
         </button>
-        <span style="color: white; font-size: 24px;">নাশিদ</span>
+        <span style="color: white;">নাশিদ</span>
       </div>
       
       <button class="fullscreen-btn" id="fullscreenBtn">
@@ -438,19 +436,17 @@
 <!-- ব্যাকগ্রাউন্ড নাশিদ (Muted Autoplay) -->
 <audio id="backgroundAudio" loop autoplay muted playsinline>
   <source src="https://www.your-server.com/nasheed.mp3" type="audio/mpeg">
-  আপনার ব্রাউজার অডিও সাপোর্ট করে না।
 </audio>
 
 <script>
   // ============================================
   // রমজান ডে ওয়াইজ কুইজ – ১৬:৯ ইউটিউব লাইভ ভার্সন
-  // Google Apps Script API + GitHub Pages রেডি
   // ============================================
 
-  // ---------- আপনার Google Apps Script Web App URL এখানে বসান ----------
+  // ---------- আপনার Apps Script URL এখানে বসান ----------
   const API_URL = "https://script.google.com/macros/s/AKfycbyw0lNMLsO4lx7vGf6OPHz8Kai3prfoSn7rFH22kvhjouUXJTr528U_HUHeOxxFtSj3tA/exec"; 
 
-  const TOTAL_TIME = 15; // সেকেন্ড
+  const TOTAL_TIME = 15;
   let allQuizData = [];
   let quizData = [];
   let currentIdx = 0;
@@ -474,10 +470,10 @@
   // ---------- রমজানের দিন নির্ণয় (আনুমানিক) ----------
   function getRamadanDay() {
     const now = new Date();
-    const ramadanStart = new Date(now.getFullYear(), 2, 11); // 11ই মার্চ (প্রতি বছর আপডেট করুন)
+    const ramadanStart = new Date(now.getFullYear(), 2, 11);
     const diffDays = Math.floor((now - ramadanStart) / (1000 * 3600 * 24)) + 1;
     if (diffDays >= 1 && diffDays <= 30) return diffDays;
-    return 15; // নিরাপদ ফলব্যাক
+    return 15;
   }
 
   function updateRamadanBadge() {
@@ -485,53 +481,39 @@
     ramadanEl.innerHTML = `<i class="fas fa-calendar-alt"></i> রমজান ${day}`;
   }
   updateRamadanBadge();
-  setInterval(updateRamadanBadge, 3600000); // প্রতি ঘণ্টায় আপডেট
+  setInterval(updateRamadanBadge, 3600000);
 
   // ---------- অডিও মিউট/আনমিউট ----------
   let isAudioMuted = true;
-
   audioToggleBtn.addEventListener('click', function() {
     if (audioEl.muted) {
       audioEl.muted = false;
       audioIcon.className = 'fas fa-volume-up';
-      isAudioMuted = false;
-      if (audioEl.paused) {
-        audioEl.play().catch(e => console.log('Play failed:', e));
-      }
+      if (audioEl.paused) audioEl.play().catch(e => console.log(e));
     } else {
       audioEl.muted = true;
       audioIcon.className = 'fas fa-volume-mute';
-      isAudioMuted = true;
     }
   });
 
-  // ---------- API থেকে ডাটা ফেচ ----------
+  // ---------- API ফেচ ----------
   async function fetchQuizzes() {
     try {
       const res = await fetch(API_URL);
       if (!res.ok) throw new Error(`HTTP error ${res.status}`);
       allQuizData = await res.json();
-      
-      // API এরর হ্যান্ডলিং
       if (allQuizData.error) {
         questionEl.innerText = '❌ ' + allQuizData.error;
         return;
       }
-
-      // 'day' কলাম আছে কিনা চেক
       const hasDayColumn = allQuizData.length > 0 && allQuizData[0].hasOwnProperty('day');
-      
       if (hasDayColumn) {
         const today = getRamadanDay();
         quizData = allQuizData.filter(q => parseInt(q.day) === today);
-        if (quizData.length === 0) {
-          quizData = [...allQuizData]; // ফলব্যাক
-          console.warn(`No quiz for day ${today}, showing all.`);
-        }
+        if (quizData.length === 0) quizData = [...allQuizData];
       } else {
         quizData = [...allQuizData];
       }
-
       if (quizData.length) {
         shuffleArray(quizData);
         showQuestion(0);
@@ -545,7 +527,6 @@
     }
   }
 
-  // ---------- শাফল (এলোমেলো) ----------
   function shuffleArray(arr) {
     for (let i = arr.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -553,7 +534,6 @@
     }
   }
 
-  // ---------- প্রশ্ন দেখান ----------
   function showQuestion(index) {
     if (!quizData.length) return;
     const q = quizData[index];
@@ -572,7 +552,6 @@
     optC.classList.remove('option-correct');
   }
 
-  // ---------- সঠিক উত্তর হাইলাইট ----------
   function showCorrectAnswer() {
     if (isAnswered) return;
     isAnswered = true;
@@ -580,21 +559,17 @@
     if (el) el.classList.add('option-correct');
   }
 
-  // ---------- টাইমার ----------
   function startTimer() {
     if (timerInterval) clearInterval(timerInterval);
     timeLeft = TOTAL_TIME;
     updateTimerUI(timeLeft);
-
     timerInterval = setInterval(() => {
       timeLeft--;
       updateTimerUI(timeLeft);
       if (timeLeft <= 0) {
         clearInterval(timerInterval);
         showCorrectAnswer();
-        setTimeout(() => {
-          nextQuestion();
-        }, 3000);
+        setTimeout(nextQuestion, 3000);
       }
     }, 1000);
   }
@@ -603,11 +578,7 @@
     timerSpan.innerText = sec;
     const angle = (sec / TOTAL_TIME) * 360;
     progressCircle.style.background = `conic-gradient(#ffd700 ${angle}deg, #2a2a2a ${angle}deg)`;
-    if (sec <= 5) {
-      progressCircle.style.boxShadow = '0 0 60px rgba(255,0,0,0.8)';
-    } else {
-      progressCircle.style.boxShadow = '0 0 40px rgba(255,215,0,0.5)';
-    }
+    progressCircle.style.boxShadow = sec <= 5 ? '0 0 60px rgba(255,0,0,0.8)' : '0 0 40px rgba(255,215,0,0.5)';
   }
 
   function nextQuestion() {
@@ -616,7 +587,6 @@
     startTimer();
   }
 
-  // ---------- ফুলস্ক্রিন টগল ----------
   function toggleFullscreen() {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen();
@@ -624,35 +594,13 @@
       document.exitFullscreen();
     }
   }
-
   document.getElementById('fullscreenBtn').addEventListener('click', toggleFullscreen);
 
-  // ---------- ওরিয়েন্টেশন চেঞ্জ হ্যান্ডলার (CSS বুস্টার) ----------
-  function handleOrientationChange() {
-    if (window.matchMedia("(orientation: portrait)").matches) {
-      document.body.classList.add('portrait');
-      document.body.classList.remove('landscape');
-    } else {
-      document.body.classList.add('landscape');
-      document.body.classList.remove('portrait');
-    }
-  }
-  window.addEventListener('orientationchange', handleOrientationChange);
-  window.addEventListener('resize', handleOrientationChange);
-  handleOrientationChange();
-
-  // ---------- বুটস্ট্র্যাপ ----------
+  // ---------- শুরু ----------
   if (API_URL !== "YOUR_API_URL") {
     fetchQuizzes();
   } else {
     questionEl.innerText = '🔧 API_URL সেট করুন!';
-  }
-</script>
-
-<!-- API URL সেট না থাকলে সতর্কতা (ডুপ্লিকেট এভোয়েড) -->
-<script>
-  if (API_URL === "YOUR_API_URL") {
-    document.getElementById('question').innerText = '🔧 অনুগ্রহ করে index.html-এ আপনার Apps Script URL দিন।';
   }
 </script>
 </body>
