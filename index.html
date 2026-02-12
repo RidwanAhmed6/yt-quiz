@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes">
+  <title>আলোকিত কুইজ | রমজান ডে ওয়াইজ | ১৬:৯</title>
+  <!-- Google Fonts & Font Awesome -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* ===== 16:9 YouTube Live Optimized ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 50% 50%, #0b0e14, #030405);
+      font-family: 'Cairo', sans-serif;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    body::after {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.08"><path fill="%23ffd700" d="M50 0L62 35H97L72 55L84 90L50 70L16 90L28 55L3 35H38L50 0Z"/></svg>');
+      background-size: 80px 80px;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .live-container {
+      position: relative;
+      z-index: 10;
+      width: 95vw;
+      max-width: 1600px;
+      height: 85vh;
+      background: rgba(8, 12, 25, 0.75);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 2px solid rgba(255, 215, 0, 0.35);
+      border-radius: 60px;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,215,0,0.2) inset;
+      display: flex;
+      flex-direction: column;
+      padding: 30px 50px;
+      animation: borderGlow 4s infinite alternate;
+    }
+
+    @keyframes borderGlow {
+      0% { border-color: rgba(255,215,0,0.25); box-shadow: 0 30px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,215,0,0.15) inset; }
+      100% { border-color: rgba(255,215,0,0.6); box-shadow: 0 40px 80px rgba(255,215,0,0.2), 0 0 0 3px rgba(255,215,0,0.2) inset; }
+    }
+
+    .live-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 15px;
+      border-bottom: 2px dashed rgba(255,215,0,0.4);
+      margin-bottom: 20px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .logo i {
+      font-size: 60px;
+      color: #ffd700;
+      text-shadow: 0 0 30px #ffd700;
+    }
+
+    .logo span {
+      font-size: 48px;
+      font-weight: 900;
+      background: linear-gradient(145deg, #ffe082, #ffb300);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 2px;
+    }
+
+    .day-badge {
+      background: rgba(0,0,0,0.6);
+      padding: 12px 32px;
+      border-radius: 60px;
+      font-size: 32px;
+      font-weight: 700;
+      color: #ffd700;
+      border: 1px solid #ffd700;
+      box-shadow: 0 0 20px rgba(255,215,0,0.3);
+      backdrop-filter: blur(4px);
+    }
+
+    .question-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: rgba(0,0,0,0.25);
+      border-radius: 60px;
+      margin: 20px 0;
+      padding: 30px 40px;
+      border: 1px solid rgba(255,215,0,0.2);
+    }
+
+    .question-text {
+      font-size: 64px;
+      font-weight: 900;
+      line-height: 1.4;
+      text-align: center;
+      color: #fff;
+      text-shadow: 0 4px 20px rgba(0,0,0,0.8);
+      word-break: break-word;
+      animation: fadeSlide 0.8s ease;
+    }
+
+    .options-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+      width: 100%;
+      margin: 30px 0;
+    }
+
+    .option-card {
+      background: linear-gradient(145deg, #16202e, #0c111b);
+      border: 2px solid rgba(255,215,0,0.3);
+      border-radius: 40px;
+      padding: 30px 15px;
+      font-size: 40px;
+      font-weight: 700;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      box-shadow: 0 15px 0 #00000055, 0 0 30px rgba(0,0,0,0.5);
+      transition: all 0.2s;
+      text-shadow: 0 2px 5px black;
+    }
+
+    .option-card i {
+      color: #ffd700;
+      font-size: 48px;
+      filter: drop-shadow(0 0 8px gold);
+    }
+
+    .option-card:hover {
+      transform: scale(1.02);
+      border-color: #ffd700;
+      background: rgba(255,215,0,0.15);
+    }
+
+    .option-correct {
+      background: #1e4a1e !important;
+      border-color: #ffd700 !important;
+      box-shadow: 0 0 60px #2e7d32, 0 15px 0 #0a2e0a !important;
+    }
+
+    .timer-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .circular-timer {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+    }
+
+    .progress-circle {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: conic-gradient(#ffd700 0deg, #2a2a2a 0deg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.1s linear;
+      box-shadow: 0 0 40px rgba(255,215,0,0.4);
+    }
+
+    .inner-circle {
+      width: 118px;
+      height: 118px;
+      border-radius: 50%;
+      background: #0a0f1e;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: 3px solid rgba(255,215,0,0.6);
+    }
+
+    .inner-circle span {
+      font-size: 58px;
+      font-weight: 900;
+      color: #ffd700;
+      line-height: 1;
+    }
+
+    .inner-circle small {
+      color: rgba(255,255,255,0.9);
+      font-size: 22px;
+    }
+
+    .audio-control {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      background: rgba(0,0,0,0.5);
+      padding: 10px 25px;
+      border-radius: 60px;
+      border: 1px solid rgba(255,215,0,0.6);
+    }
+
+    .audio-control button {
+      background: transparent;
+      border: none;
+      color: #ffd700;
+      font-size: 40px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .audio-control button:hover {
+      color: white;
+      text-shadow: 0 0 15px gold;
+    }
+
+    .fullscreen-btn {
+      background: rgba(0,0,0,0.5);
+      border: 2px solid #ffd700;
+      color: #ffd700;
+      padding: 18px 36px;
+      border-radius: 60px;
+      font-size: 32px;
+      font-weight: 600;
+      cursor: pointer;
+      backdrop-filter: blur(6px);
+      display: flex;
+      gap: 15px;
+      align-items: center;
+      transition: 0.3s;
+    }
+
+    .fullscreen-btn:hover {
+      background: #ffd700;
+      color: black;
+      border-color: white;
+    }
+
+    .live-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 20px;
+      color: rgba(255,215,0,0.8);
+      font-size: 28px;
+    }
+
+    .shuffle-badge {
+      background: rgba(255,215,0,0.1);
+      padding: 10px 30px;
+      border-radius: 50px;
+      border: 1px dashed gold;
+    }
+
+    @keyframes fadeSlide {
+      0% { opacity: 0; transform: translateY(30px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 1200px) {
+      .live-container { padding: 25px 35px; }
+      .logo span { font-size: 40px; }
+      .question-text { font-size: 54px; }
+      .option-card { font-size: 32px; padding: 20px; }
+      .option-card i { font-size: 40px; }
+    }
+
+    @media (max-width: 900px) {
+      .logo span { font-size: 32px; }
+      .question-text { font-size: 44px; }
+      .option-card { font-size: 28px; }
+    }
+
+    body, html { overflow: hidden; }
+  </style>
+</head>
+<body>
+
+<div class="live-container" id="app">
+  <!-- HEADER -->
+  <div class="live-header">
+    <div class="logo">
+      <i class="fas fa-mosque"></i>
+      <span>আলোকিত কুইজ</span>
+    </div>
+    <div class="day-badge" id="ramadanDisplay">
+      <i class="fas fa-calendar-alt"></i> রমজান ১৫
+    </div>
+  </div>
+
+  <!-- QUESTION AREA -->
+  <div class="question-area">
+    <div class="question-text" id="question">প্রশ্ন লোড হচ্ছে…</div>
+  </div>
+
+  <!-- 3 OPTIONS -->
+  <div class="options-row" id="optionsRow">
+    <div class="option-card" id="optA"><i class="fas fa-cube"></i> A) ...</div>
+    <div class="option-card" id="optB"><i class="fas fa-cube"></i> B) ...</div>
+    <div class="option-card" id="optC"><i class="fas fa-cube"></i> C) ...</div>
+  </div>
+
+  <!-- TIMER + AUDIO CONTROL + FULLSCREEN -->
+  <div class="timer-section">
+    <div class="circular-timer">
+      <div class="progress-circle" id="progressCircle" style="background: conic-gradient(#ffd700 0deg, #2a2a2a 0deg);">
+        <div class="inner-circle">
+          <span id="timerNumber">15</span>
+          <small>সেকেন্ড</small>
+        </div>
+      </div>
+      <div class="shuffle-badge">
+        <i class="fas fa-shuffle"></i> স্বয়ংক্রিয় শাফল
+      </div>
+    </div>
+    
+    <div style="display: flex; gap: 20px; align-items: center;">
+      <!-- Audio Control (Unmute) -->
+      <div class="audio-control">
+        <button id="audioToggleBtn">
+          <i id="audioIcon" class="fas fa-volume-mute"></i>
+        </button>
+        <span style="color: white; font-size: 24px;">নাশিদ</span>
+      </div>
+      
+      <button class="fullscreen-btn" id="fullscreenBtn">
+        <i class="fas fa-expand"></i> ফুলস্ক্রিন
+      </button>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="live-footer">
+    <span><i class="fas fa-video"></i> YouTube Live 16:9</span>
+    <span><i class="fas fa-star"></i> আজকের রমজান দিনের কুইজ</span>
+  </div>
+</div>
+
+<!-- Background Nasheed – MUTED AUTOPLAY -->
+<audio id="backgroundAudio" loop autoplay muted playsinline>
+  <source src="https://www.your-server.com/nasheed.mp3" type="audio/mpeg">
+  Your browser does not support audio.
+</audio>
+
+<script>
+  // =========================================
+  // রমজান ডে ওয়াইজ কুইজ – ১৬:৯ ইউটিউব লাইভ ভার্সন
+  // Google Apps Script + GitHub Pages
+  // =========================================
+
+  // ---------- আপনার Apps Script URL এখানে বসান ----------
+  const API_URL = "YOUR_API_URL"; 
+
+  const TOTAL_TIME = 15;
+  let allQuizData = [];        // API থেকে পাওয়া সকল কুইজ
+  let quizData = [];           // আজকের রমজান দিনের ফিল্টারকৃত কুইজ
+  let currentIdx = 0;
+  let timerInterval = null;
+  let timeLeft = TOTAL_TIME;
+  let isAnswered = false;
+  let correctAns = '';
+
+  // DOM Elements
+  const questionEl = document.getElementById('question');
+  const optA = document.getElementById('optA');
+  const optB = document.getElementById('optB');
+  const optC = document.getElementById('optC');
+  const timerSpan = document.getElementById('timerNumber');
+  const progressCircle = document.getElementById('progressCircle');
+  const ramadanEl = document.getElementById('ramadanDisplay');
+  const audioEl = document.getElementById('backgroundAudio');
+  const audioToggleBtn = document.getElementById('audioToggleBtn');
+  const audioIcon = document.getElementById('audioIcon');
+
+  // ---------- রমজানের দিন নির্ণয় (আনুমানিক) ----------
+  function getRamadanDay() {
+    const now = new Date();
+    // ধরে নিচ্ছি রমজান শুরু মার্চ ১১ (প্রতি বছর পরিবর্তন হবে, আপনি চাইলে সঠিক তারিখ সেট করুন)
+    const ramadanStart = new Date(now.getFullYear(), 2, 11); // 11th March
+    const diffDays = Math.floor((now - ramadanStart) / (1000 * 3600 * 24)) + 1;
+    if (diffDays >= 1 && diffDays <= 30) return diffDays;
+    return 15; // fallback
+  }
+
+  function updateRamadanBadge() {
+    const day = getRamadanDay();
+    ramadanEl.innerHTML = `<i class="fas fa-calendar-alt"></i> রমজান ${day}`;
+  }
+  updateRamadanBadge();
+  setInterval(updateRamadanBadge, 3600000); // প্রতি ঘণ্টায় আপডেট
+
+  // ---------- অডিও কন্ট্রোল (মিউট/আনমিউট) ----------
+  let isAudioMuted = true; // শুরুতে মিউটেড
+
+  audioToggleBtn.addEventListener('click', function() {
+    if (audioEl.muted) {
+      audioEl.muted = false;
+      audioIcon.className = 'fas fa-volume-up';
+      isAudioMuted = false;
+      // যদি পজড থাকে তাহলে প্লে করার চেষ্টা
+      if (audioEl.paused) {
+        audioEl.play().catch(e => console.log('Play failed:', e));
+      }
+    } else {
+      audioEl.muted = true;
+      audioIcon.className = 'fas fa-volume-mute';
+      isAudioMuted = true;
+    }
+  });
+
+  // প্রথমবার ইউজার ক্লিক না করা পর্যন্ত মিউটেড থাকবে, কিন্তু অটোপ্লে muted অবস্থায় হয়ে যাবে।
+
+  // ---------- API থেকে ডাটা লোড ----------
+  async function fetchQuizzes() {
+    try {
+      const res = await fetch(API_URL);
+      allQuizData = await res.json();
+      
+      // শীটে 'day' কলাম আছে কিনা চেক করুন (প্রথম অবজেক্টে day প্রপার্টি আছে?)
+      const hasDayColumn = allQuizData.length > 0 && allQuizData[0].hasOwnProperty('day');
+      
+      if (hasDayColumn) {
+        // আজকের দিন অনুযায়ী ফিল্টার
+        const today = getRamadanDay();
+        quizData = allQuizData.filter(q => parseInt(q.day) === today);
+        if (quizData.length === 0) {
+          // আজকের জন্য কোনো কুইজ না থাকলে সব কুইজ দেখান (ফলব্যাক)
+          quizData = [...allQuizData];
+          console.warn(`No quiz for day ${today}, showing all.`);
+        }
+      } else {
+        // 'day' কলাম নেই -> সব ডাটা ব্যবহার করুন
+        quizData = [...allQuizData];
+      }
+
+      if (quizData.length) {
+        shuffleArray(quizData);
+        showQuestion(0);
+        startTimer();
+      } else {
+        questionEl.innerText = '❌ কোনো কুইজ ডাটা নেই';
+      }
+    } catch (e) {
+      console.error(e);
+      questionEl.innerText = '⚠️ API সংযোগ ব্যর্থ, URL চেক করুন';
+    }
+  }
+
+  // ---------- শাফল ----------
+  function shuffleArray(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+  }
+
+  // ---------- প্রশ্ন দেখান ----------
+  function showQuestion(index) {
+    if (!quizData.length) return;
+    const q = quizData[index];
+    questionEl.innerText = q.question || 'প্রশ্ন নেই';
+    optA.innerHTML = `<i class="fas fa-cube"></i> A) ${q.optionA || ''}`;
+    optB.innerHTML = `<i class="fas fa-cube"></i> B) ${q.optionB || ''}`;
+    optC.innerHTML = `<i class="fas fa-cube"></i> C) ${q.optionC || ''}`;
+    correctAns = (q.correct || 'A').toUpperCase();
+    removeHighlights();
+    isAnswered = false;
+  }
+
+  function removeHighlights() {
+    optA.classList.remove('option-correct');
+    optB.classList.remove('option-correct');
+    optC.classList.remove('option-correct');
+  }
+
+  // ---------- সঠিক উত্তর দেখান ----------
+  function showCorrectAnswer() {
+    if (isAnswered) return;
+    isAnswered = true;
+    const el = document.getElementById(`opt${correctAns}`);
+    if (el) el.classList.add('option-correct');
+  }
+
+  // ---------- টাইমার ----------
+  function startTimer() {
+    if (timerInterval) clearInterval(timerInterval);
+    timeLeft = TOTAL_TIME;
+    updateTimerUI(timeLeft);
+
+    timerInterval = setInterval(() => {
+      timeLeft--;
+      updateTimerUI(timeLeft);
+      if (timeLeft <= 0) {
+        clearInterval(timerInterval);
+        showCorrectAnswer();
+        setTimeout(() => {
+          nextQuestion();
+        }, 3000);
+      }
+    }, 1000);
+  }
+
+  function updateTimerUI(sec) {
+    timerSpan.innerText = sec;
+    const angle = (sec / TOTAL_TIME) * 360;
+    progressCircle.style.background = `conic-gradient(#ffd700 ${angle}deg, #2a2a2a ${angle}deg)`;
+    if (sec <= 5) {
+      progressCircle.style.boxShadow = '0 0 60px rgba(255,0,0,0.8)';
+    } else {
+      progressCircle.style.boxShadow = '0 0 40px rgba(255,215,0,0.5)';
+    }
+  }
+
+  function nextQuestion() {
+    currentIdx = (currentIdx + 1) % quizData.length;
+    showQuestion(currentIdx);
+    startTimer();
+  }
+
+  // ---------- ফুলস্ক্রিন ----------
+  function toggleFullscreen() {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+    } else {
+      document.exitFullscreen();
+    }
+  }
+
+  // ---------- ইভেন্ট লিসেনার ----------
+  document.getElementById('fullscreenBtn').addEventListener('click', toggleFullscreen);
+
+  // ---------- শুরু করুন ----------
+  if (API_URL !== "YOUR_API_URL") {
+    fetchQuizzes();
+  } else {
+    questionEl.innerText = '🔧 API_URL সেট করুন!';
+  }
+
+  // অডিও মিউটেড অবস্থায় অটোপ্লে হয়ে যাবে। ইউজার বাটন ক্লিক করলে আনমিউট হবে।
+</script>
+
+<!-- API URL সেট না করলে সতর্কতা -->
+<script>
+  if (API_URL === "YOUR_API_URL") {
+    document.getElementById('question').innerText = '🔧 অনুগ্রহ করে index.html-এ আপনার Apps Script URL দিন।';
+  }
+</script>
+</body>
+</html>
