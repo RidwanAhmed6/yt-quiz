@@ -2,7 +2,6 @@
 <html lang="bn">
 <head>
   <meta charset="UTF-8">
-  <!-- পারফেক্ট ভিউপোর্ট: ডায়নামিক ভিউপোর্ট হাইট (dvh) + সেফ এরিয়া -->
   <meta content='IE=edge' http-equiv='X-UA-Compatible'/>
   <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'/>
   <meta content='true' name='HandheldFriendly'/>
@@ -20,22 +19,15 @@
     }
 
     html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    font-family: &#39;Noto Serif Bengali&#39;, serif;
-    background: radial-gradient(circle at 50% 50%, #0b0e14, #030405);
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 50% 50%, #0b0e14, #030405);
       font-family: 'Cairo', sans-serif;
       color: white;
       display: flex;
       align-items: center;
       justify-content: center;
     }
-
-body {
-    display: block; /* Ensure default block layout for body */
-}
-      
 
     /* ইসলামিক প্যাটার্ন ওভারলে */
     body::after {
@@ -48,13 +40,13 @@ body {
       z-index: 1;
     }
 
-    /* ----- মেইন কন্টেইনার (মোবাইল ফার্স্ট) ----- */
+    /* ----- মেইন কন্টেইনার (মোবাইল ফার্স্ট - পোর্ট্রেট) ----- */
     .live-container {
       position: relative;
       z-index: 10;
       width: 100%;
       max-width: 1600px;
-      height: 100%; /* পূর্ণ উচ্চতা */
+      height: 100%; /* সর্বদা পূর্ণ উচ্চতা */
       max-height: 100%;
       background: rgba(8, 12, 25, 0.75);
       backdrop-filter: blur(20px);
@@ -63,9 +55,10 @@ body {
       box-shadow: 0 30px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,215,0,0.2) inset;
       display: flex;
       flex-direction: column;
-      padding: 20px 25px; /* মোবাইলের জন্য কম প্যাডিং */
+      padding: 20px 25px;
       animation: borderGlow 4s infinite alternate;
       transition: padding 0.3s ease, border-radius 0.3s ease;
+      overflow: hidden;
     }
 
     @keyframes borderGlow {
@@ -81,7 +74,7 @@ body {
       padding-bottom: 12px;
       border-bottom: 2px dashed rgba(255,215,0,0.4);
       margin-bottom: 16px;
-      flex-shrink: 0; /* সংকোচন আটকায় */
+      flex-shrink: 0;
     }
 
     .logo {
@@ -118,9 +111,9 @@ body {
       white-space: nowrap;
     }
 
-    /* ----- প্রশ্ন এলাকা (ফ্লেক্স গ্রো নেয়) ----- */
+    /* ----- প্রশ্ন এলাকা ----- */
     .question-area {
-      flex: 1 1 auto; /* অবশিষ্ট জায়গা নেবে */
+      flex: 1 1 auto;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -130,7 +123,7 @@ body {
       margin: 10px 0;
       padding: 20px;
       border: 1px solid rgba(255,215,0,0.2);
-      min-height: 0; /* ফ্লেক্স চাইল্ডের জন্য জরুরি */
+      min-height: 0;
     }
 
     .question-text {
@@ -144,14 +137,14 @@ body {
       animation: fadeSlide 0.8s ease;
     }
 
-    /* ----- অপশন গ্রিড (মোবাইলে ১ কলাম) ----- */
+    /* ----- অপশন গ্রিড (মোবাইল পোর্ট্রেট: ১ কলাম) ----- */
     .options-row {
       display: grid;
-      grid-template-columns: 1fr; /* মোবাইল ডিফল্ট */
+      grid-template-columns: 1fr;
       gap: 15px;
       width: 100%;
       margin: 15px 0;
-      flex-shrink: 0; /* সংকুচিত না হওয়া */
+      flex-shrink: 0;
     }
 
     .option-card {
@@ -183,10 +176,10 @@ body {
       box-shadow: 0 0 60px #2e7d32, 0 10px 0 #0a2e0a !important;
     }
 
-    /* ----- টাইমার সেকশন ----- */
+    /* ----- টাইমার সেকশন (মোবাইল পোর্ট্রেট: কলাম) ----- */
     .timer-section {
       display: flex;
-      flex-direction: column; /* মোবাইলে কলাম */
+      flex-direction: column;
       align-items: flex-start;
       gap: 15px;
       margin-top: 5px;
@@ -246,7 +239,6 @@ body {
       white-space: nowrap;
     }
 
-    /* ----- অডিও ও ফুলস্ক্রিন কন্ট্রোল ----- */
     .controls-wrapper {
       display: flex;
       gap: 15px;
@@ -296,7 +288,6 @@ body {
       border-color: white;
     }
 
-    /* ----- ফুটার ----- */
     .live-footer {
       display: flex;
       justify-content: space-between;
@@ -312,11 +303,43 @@ body {
       100% { opacity: 1; transform: translateY(0); }
     }
 
-    /* ---------- ডেস্কটপ / ল্যান্ডস্কেপ ট্যাবলেট / ইউটিউব ১৬:৯ ---------- */
-    @media screen and (min-width: 768px) and (orientation: landscape) {
+    /* ---------- মোবাইল ল্যান্ডস্কেপ (ছোট পর্দা, আড়াআড়ি) ---------- */
+    @media screen and (orientation: landscape) and (max-height: 500px) {
+      .live-container {
+        padding: 12px 20px;
+        border-radius: 0;
+      }
+      .logo i { font-size: 36px; }
+      .logo span { font-size: 28px; }
+      .day-badge { font-size: 20px; padding: 6px 16px; }
+      .question-text { font-size: 28px; }
+      .options-row {
+        grid-template-columns: repeat(3, 1fr); /* ল্যান্ডস্কেপে ৩ কলাম */
+        gap: 10px;
+        margin: 10px 0;
+      }
+      .option-card {
+        font-size: 20px;
+        padding: 12px 8px;
+        gap: 8px;
+      }
+      .option-card i { font-size: 24px; }
+      .progress-circle { width: 80px; height: 80px; }
+      .inner-circle { width: 66px; height: 66px; }
+      .inner-circle span { font-size: 32px; }
+      .inner-circle small { font-size: 14px; }
+      .shuffle-badge { font-size: 16px; padding: 6px 16px; }
+      .audio-control { padding: 6px 16px; }
+      .audio-control button { font-size: 24px; }
+      .fullscreen-btn { padding: 8px 18px; font-size: 20px; }
+      .live-footer { font-size: 16px; }
+    }
+
+    /* ---------- ট্যাবলেট/ডেস্কটপ ল্যান্ডস্কেপ (বড় পর্দা) ---------- */
+    @media screen and (min-width: 1024px) and (orientation: landscape) {
       .live-container {
         width: 95vw;
-        height: 85vh;
+        height: 90vh;
         border-radius: 60px;
         padding: 30px 50px;
       }
@@ -362,9 +385,9 @@ body {
 
     /* ---------- iPhone 12/13/14 ল্যান্ডস্কেপ স্পেসিফিক টিউনিং ---------- */
     @media screen and (width: 844px) and (height: 390px) and (orientation: landscape) {
-      .live-container { padding: 20px 30px; }
-      .question-text { font-size: 42px; }
-      .option-card { font-size: 28px; padding: 20px; }
+      .live-container { padding: 12px 20px; }
+      .question-text { font-size: 32px; }
+      .option-card { font-size: 22px; padding: 12px; }
     }
 
     /* ---------- iOS Safe Area (নচ, হোম ইন্ডিকেটর) ---------- */
@@ -376,9 +399,7 @@ body {
       }
     }
 
-    /* আর কোনো ওভারফ্লো না */
     body, html { overflow: hidden; }
-    .live-container { overflow: hidden; }
   </style>
 </head>
 <body>
@@ -400,7 +421,7 @@ body {
     <div class="question-text" id="question">প্রশ্ন লোড হচ্ছে…</div>
   </div>
 
-  <!-- অপশন (৩টি) - মোবাইলে ১ কলাম, ডেস্কটপে ৩ কলাম -->
+  <!-- অপশন (৩টি) -->
   <div class="options-row" id="optionsRow">
     <div class="option-card" id="optA"><i class="fas fa-cube"></i> A) ...</div>
     <div class="option-card" id="optB"><i class="fas fa-cube"></i> B) ...</div>
