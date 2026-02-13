@@ -6,9 +6,9 @@
   <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'/>
   <meta content='true' name='HandheldFriendly'/>
   <meta content='yes' name='apple-mobile-web-app-capable'/>
-  <title>আলোকিত কুইজ | রমজান ডে ওয়াইজ + ভয়েস</title>
-  <!-- Google Fonts & Font Awesome 6 -->
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;900&display=swap" rel="stylesheet">
+  <title>AudioQalb কুইজ চ্যালেঞ্জ | রমজান ডে ওয়াইজ</title>
+  <!-- Google Fonts & Font Awesome -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
     /* ----- গ্লোবাল রিসেট ----- */
@@ -22,32 +22,34 @@
       width: 100%;
       height: 100%;
       background: radial-gradient(circle at 50% 50%, #0b0e14, #030405);
-      font-family: 'Cairo', sans-serif;
+      font-family: 'Cairo', 'Inter', sans-serif;
       color: white;
       display: flex;
       align-items: center;
       justify-content: center;
+      position: relative;
     }
 
-    /* ইসলামিক প্যাটার্ন ওভারলে */
-    body::after {
-      content: "";
+    /* ----- ওয়াটারমার্ক লোগো (স্ক্রিনের মাঝে) ----- */
+    .watermark-logo {
       position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.08"><path fill="%23ffd700" d="M50 0L62 35H97L72 55L84 90L50 70L16 90L28 55L3 35H38L50 0Z"/></svg>');
-      background-size: 80px 80px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 250px;
+      height: auto;
+      opacity: 0.1;
       pointer-events: none;
-      z-index: 1;
+      z-index: 2;
     }
 
-    /* ----- মেইন কন্টেইনার (মোবাইল ফার্স্ট) ----- */
     .live-container {
       position: relative;
       z-index: 10;
       width: 100%;
       max-width: 1600px;
       height: 100%;
-      background: rgba(8, 12, 25, 0.75);
+      background: rgba(8, 12, 25, 0.85);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border: 2px solid rgba(255, 215, 0, 0.35);
@@ -65,7 +67,7 @@
       100% { border-color: rgba(255,215,0,0.6); box-shadow: 0 40px 80px rgba(255,215,0,0.2), 0 0 0 3px rgba(255,215,0,0.2) inset; }
     }
 
-    /* ----- হেডার ----- */
+    /* ----- হেডার (লোগো + আসর) ----- */
     .live-header {
       display: flex;
       justify-content: space-between;
@@ -82,14 +84,16 @@
       gap: 12px;
     }
 
-    .logo i {
-      font-size: 48px;
-      color: #ffd700;
-      text-shadow: 0 0 30px #ffd700;
+    .logo-img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #ffd700;
     }
 
     .logo span {
-      font-size: 36px;
+      font-size: 32px;
       font-weight: 900;
       background: linear-gradient(145deg, #ffe082, #ffb300);
       -webkit-background-clip: text;
@@ -110,7 +114,7 @@
       white-space: nowrap;
     }
 
-    /* ----- প্রশ্ন এলাকা ----- */
+    /* ----- প্রশ্ন এলাকা (বাংলা + ইংরেজি অনুবাদ) ----- */
     .question-area {
       flex: 1 1 auto;
       display: flex;
@@ -126,7 +130,7 @@
     }
 
     .question-text {
-      font-size: 32px;
+      font-size: 36px;
       font-weight: 900;
       line-height: 1.4;
       text-align: center;
@@ -136,7 +140,16 @@
       animation: fadeSlide 0.8s ease;
     }
 
-    /* ----- অপশন গ্রিড (মোবাইল পোর্ট্রেট: ১ কলাম) ----- */
+    .question-english {
+      font-size: 24px;
+      font-weight: 500;
+      color: #ffd700;
+      margin-top: 10px;
+      font-family: 'Inter', sans-serif;
+      opacity: 0.9;
+    }
+
+    /* ----- অপশন গ্রিড (বাংলা + ইংরেজি অনুবাদ) ----- */
     .options-row {
       display: grid;
       grid-template-columns: 1fr;
@@ -155,18 +168,32 @@
       font-weight: 700;
       color: white;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 12px;
+      gap: 5px;
       box-shadow: 0 10px 0 #00000055, 0 0 30px rgba(0,0,0,0.5);
       transition: all 0.2s;
       text-shadow: 0 2px 5px black;
     }
 
-    .option-card i {
+    .option-bn {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .option-bn i {
       color: #ffd700;
       font-size: 28px;
       filter: drop-shadow(0 0 8px gold);
+    }
+
+    .option-en {
+      font-size: 18px;
+      color: #ffd700;
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
     }
 
     .option-correct {
@@ -175,7 +202,7 @@
       box-shadow: 0 0 60px #2e7d32, 0 10px 0 #0a2e0a !important;
     }
 
-    /* ----- টাইমার সেকশন ----- */
+    /* ----- টাইমার (২০ সেকেন্ড) ----- */
     .timer-section {
       display: flex;
       flex-direction: column;
@@ -238,7 +265,7 @@
       white-space: nowrap;
     }
 
-    /* ----- কন্ট্রোলস (অডিও, ভয়েস, ফুলস্ক্রিন) ----- */
+    /* ----- কন্ট্রোলস (অডিও, ভয়েস, সাবস্ক্রাইব) ----- */
     .controls-wrapper {
       display: flex;
       gap: 15px;
@@ -267,26 +294,30 @@
       transition: 0.2s;
     }
 
-    .fullscreen-btn {
-      background: rgba(0,0,0,0.5);
-      border: 2px solid #ffd700;
-      color: #ffd700;
-      padding: 10px 24px;
+    .subscribe-btn {
+      background: #ff0000;
+      border: none;
+      color: white;
+      padding: 12px 28px;
       border-radius: 60px;
       font-size: 24px;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
       backdrop-filter: blur(6px);
       display: flex;
-      gap: 10px;
+      gap: 12px;
       align-items: center;
       transition: 0.3s;
+      border: 1px solid rgba(255,255,255,0.3);
     }
 
-    .fullscreen-btn:hover {
-      background: #ffd700;
-      color: black;
-      border-color: white;
+    .subscribe-btn:hover {
+      background: #cc0000;
+      transform: scale(1.05);
+    }
+
+    .subscribe-btn i {
+      color: white;
     }
 
     .live-footer {
@@ -304,49 +335,40 @@
       100% { opacity: 1; transform: translateY(0); }
     }
 
-    /* ---------- মোবাইল ল্যান্ডস্কেপ (ছোট পর্দা, আড়াআড়ি) ---------- */
+    /* ---------- রেসপনসিভ ---------- */
     @media screen and (orientation: landscape) and (max-height: 500px) {
       .live-container { padding: 12px 20px; border-radius: 0; }
-      .logo i { font-size: 36px; }
-      .logo span { font-size: 28px; }
-      .day-badge { font-size: 20px; padding: 6px 16px; }
-      .question-text { font-size: 28px; }
-      .options-row { grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 10px 0; }
-      .option-card { font-size: 20px; padding: 12px 8px; gap: 8px; }
-      .option-card i { font-size: 24px; }
-      .progress-circle { width: 80px; height: 80px; }
-      .inner-circle { width: 66px; height: 66px; }
-      .inner-circle span { font-size: 32px; }
-      .inner-circle small { font-size: 14px; }
-      .shuffle-badge { font-size: 16px; padding: 6px 16px; }
-      .audio-control, .voice-control { padding: 6px 16px; }
-      .audio-control button, .voice-control button { font-size: 24px; }
-      .fullscreen-btn { padding: 8px 18px; font-size: 20px; }
-      .live-footer { font-size: 16px; }
+      .logo-img { width: 40px; height: 40px; }
+      .logo span { font-size: 24px; }
+      .day-badge { font-size: 18px; padding: 6px 16px; }
+      .question-text { font-size: 26px; }
+      .question-english { font-size: 18px; }
+      .options-row { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+      .option-card { font-size: 20px; padding: 10px; }
+      .option-en { font-size: 14px; }
+      .progress-circle { width: 70px; height: 70px; }
+      .inner-circle { width: 58px; height: 58px; }
+      .inner-circle span { font-size: 28px; }
+      .subscribe-btn { padding: 8px 20px; font-size: 20px; }
+      .watermark-logo { width: 150px; }
     }
 
-    /* ---------- ডেস্কটপ/ট্যাবলেট ল্যান্ডস্কেপ ---------- */
     @media screen and (min-width: 1024px) and (orientation: landscape) {
       .live-container { width: 95vw; height: 90vh; border-radius: 60px; padding: 30px 50px; }
-      .logo i { font-size: 60px; }
+      .logo-img { width: 70px; height: 70px; }
       .logo span { font-size: 48px; }
       .day-badge { font-size: 32px; padding: 12px 32px; }
       .question-text { font-size: 64px; }
-      .options-row { grid-template-columns: repeat(3, 1fr); gap: 30px; margin: 30px 0; }
-      .option-card { font-size: 40px; padding: 30px 15px; gap: 20px; }
-      .option-card i { font-size: 48px; }
+      .question-english { font-size: 32px; }
+      .options-row { grid-template-columns: repeat(3, 1fr); gap: 30px; }
+      .option-card { font-size: 40px; padding: 30px 15px; }
+      .option-en { font-size: 24px; }
       .progress-circle { width: 140px; height: 140px; }
       .inner-circle { width: 118px; height: 118px; }
       .inner-circle span { font-size: 58px; }
-      .inner-circle small { font-size: 22px; }
       .timer-section { flex-direction: row; align-items: center; justify-content: space-between; }
-      .circular-timer { width: auto; }
-      .shuffle-badge { font-size: 24px; padding: 10px 30px; }
-      .controls-wrapper { width: auto; }
-      .audio-control, .voice-control { padding: 10px 25px; }
-      .audio-control button, .voice-control button { font-size: 40px; }
-      .fullscreen-btn { padding: 18px 36px; font-size: 32px; }
-      .live-footer { font-size: 28px; }
+      .subscribe-btn { padding: 18px 40px; font-size: 32px; }
+      .watermark-logo { width: 350px; }
     }
 
     /* ---------- iOS Safe Area ---------- */
@@ -363,28 +385,41 @@
 </head>
 <body>
 
+  <!-- ওয়াটারমার্ক লোগো (মাঝে) -->
+  <img src="https://github.com/RidwanAhmed6/yt-quiz/blob/main/IMG_1067.png?raw=true" alt="AudioQalb Logo" class="watermark-logo">
+
 <div class="live-container" id="app">
   <!-- হেডার -->
   <div class="live-header">
     <div class="logo">
-      <i class="fas fa-mosque"></i>
-      <span>আলোকিত কুইজ</span>
+      <img src="https://github.com/RidwanAhmed6/yt-quiz/blob/main/IMG_1067.png?raw=true" alt="AudioQalb" class="logo-img">
+      <span>AudioQalb কুইজ চ্যালেঞ্জ</span>
     </div>
     <div class="day-badge" id="ramadanDisplay">
-      <i class="fas fa-calendar-alt"></i> রমজান ১৫
+      <i class="fas fa-calendar-alt"></i> আসর <span id="asrDay">১৫</span>
     </div>
   </div>
 
-  <!-- প্রশ্ন বক্স -->
+  <!-- প্রশ্ন বক্স (বাংলা + ইংরেজি অনুবাদ) -->
   <div class="question-area">
     <div class="question-text" id="question">প্রশ্ন লোড হচ্ছে…</div>
+    <div class="question-english" id="questionEn"></div>
   </div>
 
-  <!-- অপশন (৩টি) -->
+  <!-- অপশন (বাংলা + ইংরেজি অনুবাদ) -->
   <div class="options-row" id="optionsRow">
-    <div class="option-card" id="optA"><i class="fas fa-cube"></i> A) ...</div>
-    <div class="option-card" id="optB"><i class="fas fa-cube"></i> B) ...</div>
-    <div class="option-card" id="optC"><i class="fas fa-cube"></i> C) ...</div>
+    <div class="option-card" id="optA">
+      <span class="option-bn"><i class="fas fa-cube"></i> A) ...</span>
+      <span class="option-en" id="optAEn"></span>
+    </div>
+    <div class="option-card" id="optB">
+      <span class="option-bn"><i class="fas fa-cube"></i> B) ...</span>
+      <span class="option-en" id="optBEn"></span>
+    </div>
+    <div class="option-card" id="optC">
+      <span class="option-bn"><i class="fas fa-cube"></i> C) ...</span>
+      <span class="option-en" id="optCEn"></span>
+    </div>
   </div>
 
   <!-- টাইমার + কন্ট্রোলস -->
@@ -392,7 +427,7 @@
     <div class="circular-timer">
       <div class="progress-circle" id="progressCircle">
         <div class="inner-circle">
-          <span id="timerNumber">15</span>
+          <span id="timerNumber">20</span>
           <small>সেকেন্ড</small>
         </div>
       </div>
@@ -402,24 +437,25 @@
     </div>
     
     <div class="controls-wrapper">
-      <!-- অডিও কন্ট্রোল (নাশিদ) -->
+      <!-- অডিও কন্ট্রোল (নাশিদ - অটো প্লে) -->
       <div class="audio-control">
         <button id="audioToggleBtn">
-          <i id="audioIcon" class="fas fa-volume-mute"></i>
+          <i id="audioIcon" class="fas fa-volume-up"></i>
         </button>
         <span style="color: white;">নাশিদ</span>
       </div>
       
-      <!-- ভয়েস কন্ট্রোল (টেক্সট টু স্পিচ) -->
+      <!-- ইংলিশ ভয়েস কন্ট্রোল (ডিফল্ট স্পিচ সিন্থেসিস) -->
       <div class="voice-control">
         <button id="voiceToggleBtn">
-          <i id="voiceIcon" class="fas fa-volume-off"></i>
+          <i id="voiceIcon" class="fas fa-volume-up"></i>
         </button>
-        <span style="color: white;">ভয়েস</span>
+        <span style="color: white;">English Voice</span>
       </div>
       
-      <button class="fullscreen-btn" id="fullscreenBtn">
-        <i class="fas fa-expand"></i> ফুলস্ক্রিন
+      <!-- সাবস্ক্রাইব বাটন (আপনার ইউটিউব চ্যানেল লিংক দিন) -->
+      <button class="subscribe-btn" id="subscribeBtn">
+        <i class="fab fa-youtube"></i> সাবস্ক্রাইব
       </button>
     </div>
   </div>
@@ -427,153 +463,177 @@
   <!-- ফুটার -->
   <div class="live-footer">
     <span><i class="fas fa-video"></i> YouTube Live 16:9</span>
-    <span><i class="fas fa-star"></i> আজকের রমজান দিনের কুইজ</span>
+    <span><i class="fas fa-star"></i> আসর (Day) সীট থেকে স্বয়ংক্রিয়</span>
   </div>
 </div>
 
-<!-- ব্যাকগ্রাউন্ড নাশিদ (Muted Autoplay) -->
-<audio id="backgroundAudio" loop autoplay muted playsinline>
-  <source src="https://www.your-server.com/nasheed.mp3" type="audio/mpeg">
+<!-- ব্যাকগ্রাউন্ড নাশিদ - অটো প্লে (আনমিউটেড) -->
+<audio id="backgroundAudio" loop autoplay playsinline>
+  <source src="https://github.com/RidwanAhmed6/yt-quiz/raw/refs/heads/main/copy_34F68A0F-7768-4ECA-B7C4-7774C0812A01.mp3" type="audio/mpeg">
+  Your browser does not support audio.
 </audio>
 
 <script>
   // ============================================
-  // রমজান ডে ওয়াইজ কুইজ + অটো ভয়েস (TTS)
-  // Google Apps Script API + GitHub Pages
+  // AudioQalb কুইজ চ্যালেঞ্জ - ফাইনাল ভার্সন
+  // ফিচার: বাংলা + অটো ইংলিশ অনুবাদ, ডিফল্ট ইংলিশ ভয়েস (স্পিচ সিন্থেসিস)
+  // টাইমার: ২০ সেকেন্ড, ডেল: ২ সেকেন্ড
+  // সীট: শুধু বাংলা কলাম, ইংরেজি লাগবে না
+  // Apps Script URL: আপনার দেওয়া URL ব্যবহার করা হয়েছে
   // ============================================
 
-  // ---------- আপনার Apps Script URL এখানে বসান ----------
-  const API_URL = "https://script.google.com/macros/s/AKfycbyw0lNMLsO4lx7vGf6OPHz8Kai3prfoSn7rFH22kvhjouUXJTr528U_HUHeOxxFtSj3tA/exec"; 
+  // ---------- কনফিগারেশন ----------
+  const API_URL = "https://script.google.com/macros/s/AKfycbyw0lNMLsO4lx7vGf6OPHz8Kai3prfoSn7rFH22kvhjouUXJTr528U_HUHeOxxFtSj3tA/exec";
+  const TOTAL_TIME = 20;        // ২০ সেকেন্ড
+  const DELAY_NEXT = 2000;      // ২ সেকেন্ড (2000ms)
+  const YOUTUBE_CHANNEL_URL = "https://www.youtube.com/@YourChannel?sub_confirmation=1"; // ⚠️ আপনার চ্যানেল লিংক দিন
 
-  const TOTAL_TIME = 15;
+  // ---------- গ্লোবাল ভেরিয়েবল ----------
   let allQuizData = [];
-  let quizData = [];
+  let quizData = [];            // ফিল্টার করা ডাটা (অনূদিত টেক্সট সহ)
   let currentIdx = 0;
   let timerInterval = null;
   let timeLeft = TOTAL_TIME;
   let isAnswered = false;
   let correctAns = '';
+  let currentRamadanDay = 15;
+  let isVoiceEnabled = true;    // ডিফল্ট চালু
 
-  // ---------- গ্লোবাল ভেরিয়েবল ----------
-  let currentRamadanDay = 15; // ডিফল্ট
-  let isVoiceEnabled = false;  // ভয়েস চালু/বন্ধ
+  // অনুবাদ ক্যাশ
+  const translationCache = new Map();
 
-  // DOM এলিমেন্ট
+  // ---------- DOM এলিমেন্ট ----------
   const questionEl = document.getElementById('question');
+  const questionEnEl = document.getElementById('questionEn');
   const optA = document.getElementById('optA');
   const optB = document.getElementById('optB');
   const optC = document.getElementById('optC');
+  const optAEn = document.getElementById('optAEn');
+  const optBEn = document.getElementById('optBEn');
+  const optCEn = document.getElementById('optCEn');
   const timerSpan = document.getElementById('timerNumber');
   const progressCircle = document.getElementById('progressCircle');
-  const ramadanEl = document.getElementById('ramadanDisplay');
+  const asrDaySpan = document.getElementById('asrDay');
   const audioEl = document.getElementById('backgroundAudio');
   const audioToggleBtn = document.getElementById('audioToggleBtn');
   const audioIcon = document.getElementById('audioIcon');
   const voiceToggleBtn = document.getElementById('voiceToggleBtn');
   const voiceIcon = document.getElementById('voiceIcon');
+  const subscribeBtn = document.getElementById('subscribeBtn');
 
-  function speakText(text) {
-  if (!isVoiceEnabled) return;
-  window.speechSynthesis.cancel(); // আগের স্পিচ থামাও
+  // ---------- সাবস্ক্রাইব বাটন ----------
+  subscribeBtn.addEventListener('click', function() {
+    window.open(YOUTUBE_CHANNEL_URL, '_blank');
+  });
 
-  const utterance = new SpeechSynthesisUtterance(text);
-  
-  // ১. বাংলা সাপোর্ট করে এমন ভয়েস লোড হওয়া নিশ্চিত করা
-  let voices = window.speechSynthesis.getVoices();
-  if (voices.length === 0) {
-    // কিছু ব্রাউজারে অ্যাসিঙ্কভাবে লোড হয়
-    window.speechSynthesis.onvoiceschanged = () => {
-      voices = window.speechSynthesis.getVoices();
-      selectAndSpeak(voices, utterance, text);
-    };
-  } else {
-    selectAndSpeak(voices, utterance, text);
-  }
-}
-
-function selectAndSpeak(voices, utterance, text) {
-  // ২. বাংলা ভয়েস খোঁজা, অগ্রাধিকার: পুরুষ > উচ্চ-মান > নারী
-  const bnVoices = voices.filter(v => 
-    v.lang.includes('bn') || v.lang.includes('ben') || v.lang.includes('Bangla')
-  );
-  
-  if (bnVoices.length > 0) {
-    // ৩. প্রায়োরিটি: পুরুষ > Microsoft Natural > অন্যরা
-    const maleVoice = bnVoices.find(v => v.name.includes('Male') || v.name.includes('পুরুষ') || v.name.includes('Mr.'));
-    const msVoice = bnVoices.find(v => v.name.includes('Microsoft') && v.name.includes('Natural'));
-    
-    if (maleVoice) {
-      utterance.voice = maleVoice;
-    } else if (msVoice) {
-      utterance.voice = msVoice;
-    } else {
-      // ৪. নিম্নমানের ভয়েস বাদ দিয়ে নির্বাচন
-      const filtered = bnVoices.filter(v => 
-        !v.name.includes('Legacy') && 
-        !v.name.includes('Mobile') && 
-        !v.name.includes('Compact')
-      );
-      utterance.voice = filtered[0] || bnVoices[0];
+  // ---------- ইংলিশ ভয়েস ফাংশন (ডিফল্ট স্পিচ সিন্থেসিস) ----------
+  function speakEnglish(text) {
+    if (!isVoiceEnabled) return;
+    if (!window.speechSynthesis) {
+      console.warn('Speech synthesis not supported');
+      return;
     }
-  } else {
-    // ৫. বাংলা না পেলে হিন্দি বা ইন্ডিয়ান ইংলিশ (কাছে কাছি)
-    const hiVoices = voices.find(v => v.lang.includes('hi'));
-    const enInVoices = voices.find(v => v.lang.includes('en-IN'));
-    utterance.voice = hiVoices || enInVoices || voices[0];
-    utterance.lang = utterance.voice?.lang || 'bn-BD';
+    // চলমান স্পিচ থামাও
+    window.speechSynthesis.cancel();
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'en-US';
+    utterance.rate = 0.9;
+    utterance.pitch = 0.8;
+    utterance.volume = 1;
+
+    // ইংলিশ ভয়েস নির্বাচন (UK English Male প্রেফারেন্স)
+    const voices = window.speechSynthesis.getVoices();
+    const preferredVoice = voices.find(v => 
+      v.lang.includes('en-GB') && v.name.includes('Male')
+    ) || voices.find(v => 
+      v.lang.includes('en-US') && v.name.includes('Male')
+    ) || voices.find(v => 
+      v.lang.includes('en-GB')
+    ) || voices.find(v => 
+      v.lang.includes('en')
+    );
+    
+    if (preferredVoice) {
+      utterance.voice = preferredVoice;
+    }
+
+    window.speechSynthesis.speak(utterance);
   }
-  
-  utterance.rate = 0.85; // ধীর গতি
-  utterance.pitch = 1.1;  // পুরুষ কণ্ঠের জন্য পিচ কম
-  
-  window.speechSynthesis.speak(utterance);
-}
 
   // ---------- ভয়েস টগল ----------
   voiceToggleBtn.addEventListener('click', function() {
     isVoiceEnabled = !isVoiceEnabled;
-    if (isVoiceEnabled) {
-      voiceIcon.className = 'fas fa-volume-up';
-      // যদি প্রশ্ন লোড করা থাকে, তাহলে সেটি পড়ে শোনাও
-      if (quizData.length > 0) {
-        const q = quizData[currentIdx];
-        let speechText = q.question + '। অপশন ক: ' + q.optionA + '। অপশন খ: ' + q.optionB + '। অপশন গ: ' + q.optionC;
-        speakText(speechText);
-      }
-    } else {
-      voiceIcon.className = 'fas fa-volume-off';
-      window.speechSynthesis.cancel();
-    }
+    voiceIcon.className = isVoiceEnabled ? 'fas fa-volume-up' : 'fas fa-volume-off';
   });
 
   // ---------- অডিও কন্ট্রোল (নাশিদ) ----------
-  let isAudioMuted = true;
   audioToggleBtn.addEventListener('click', function() {
-    if (audioEl.muted) {
-      audioEl.muted = false;
+    if (audioEl.paused) {
+      audioEl.play().catch(e => console.log(e));
       audioIcon.className = 'fas fa-volume-up';
-      if (audioEl.paused) audioEl.play().catch(e => console.log(e));
     } else {
-      audioEl.muted = true;
+      audioEl.pause();
       audioIcon.className = 'fas fa-volume-mute';
     }
   });
 
-  // ---------- রমজান ব্যাজ আপডেট (সীটের ডাটা থেকে) ----------
-  function updateRamadanBadge(day) {
-    if (day) {
-      ramadanEl.innerHTML = `<i class="fas fa-calendar-alt"></i> রমজান ${day}`;
+  // অটোপ্লে চেষ্টা
+  audioEl.play().catch(e => console.log('Autoplay prevented:', e));
+
+  // ---------- আসর (Day) ব্যাজ আপডেট ----------
+  function updateAsrBadge(day) {
+    if (day && day >= 1 && day <= 30) {
+      asrDaySpan.innerText = day;
     } else {
-      ramadanEl.innerHTML = `<i class="fas fa-calendar-alt"></i> রমজান ১৫`; // fallback
+      asrDaySpan.innerText = '১৫';
     }
   }
 
-  // ---------- API ফেচ ----------
+  // ---------- অনুবাদ ফাংশন (MyMemory API - ফ্রি) ----------
+  async function translateText(bengaliText) {
+    if (!bengaliText || bengaliText.trim() === '') return '';
+    if (translationCache.has(bengaliText)) {
+      return translationCache.get(bengaliText);
+    }
+    try {
+      const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(bengaliText)}&langpair=bn|en`;
+      const response = await fetch(url);
+      const data = await response.json();
+      let translated = data.responseData.translatedText;
+      // যদি অনুবাদ ব্যর্থ হয়, মূল টেক্সট রাখি
+      if (translated === bengaliText || !translated) {
+        translated = bengaliText;
+      }
+      translationCache.set(bengaliText, translated);
+      return translated;
+    } catch (e) {
+      console.error('Translation error:', e);
+      return bengaliText;
+    }
+  }
+
+  // ---------- পুরো কুইজ ডাটা অনুবাদ করা ----------
+  async function translateQuizData(data) {
+    const translatedData = [];
+    for (const item of data) {
+      const translatedItem = { ...item };
+      translatedItem.questionEN = await translateText(item.question);
+      translatedItem.optionAEN = await translateText(item.optionA);
+      translatedItem.optionBEN = await translateText(item.optionB);
+      translatedItem.optionCEN = await translateText(item.optionC);
+      translatedData.push(translatedItem);
+    }
+    return translatedData;
+  }
+
+  // ---------- API ফেচ ও অনুবাদ ----------
   async function fetchQuizzes() {
     try {
       const res = await fetch(API_URL);
       if (!res.ok) throw new Error(`HTTP error ${res.status}`);
       allQuizData = await res.json();
+      
       if (allQuizData.error) {
         questionEl.innerText = '❌ ' + allQuizData.error;
         return;
@@ -583,25 +643,22 @@ function selectAndSpeak(voices, utterance, text) {
       const hasDayColumn = allQuizData.length > 0 && allQuizData[0].hasOwnProperty('day');
       
       if (hasDayColumn) {
-        // প্রথম প্রশ্নের day ভ্যালু নিয়ে সেট করি (ধরে নিই সব প্রশ্নের দিন একই)
         const firstDay = parseInt(allQuizData[0].day);
         if (!isNaN(firstDay) && firstDay >= 1 && firstDay <= 30) {
           currentRamadanDay = firstDay;
         }
-        // ফিল্টার: শুধু currentRamadanDay এর প্রশ্ন দেখাও
-        quizData = allQuizData.filter(q => parseInt(q.day) === currentRamadanDay);
-        if (quizData.length === 0) {
-          // যদি ঐ দিনের কোনো প্রশ্ন না থাকে, সব দেখাও
-          quizData = [...allQuizData];
-          console.warn(`No quiz for day ${currentRamadanDay}, showing all.`);
-        }
+        // ফিল্টার: শুধু currentRamadanDay এর প্রশ্ন
+        let filtered = allQuizData.filter(q => parseInt(q.day) === currentRamadanDay);
+        if (filtered.length === 0) filtered = [...allQuizData]; // fallback
+        // অনুবাদ সহ সংরক্ষণ
+        quizData = await translateQuizData(filtered);
       } else {
-        // day কলাম নেই, সব ডাটা দেখাও
-        quizData = [...allQuizData];
+        // day কলাম নেই -> সব ডাটা অনুবাদ
+        quizData = await translateQuizData(allQuizData);
       }
 
-      // রমজান ব্যাজ আপডেট
-      updateRamadanBadge(currentRamadanDay);
+      // আসর ব্যাজ আপডেট
+      updateAsrBadge(currentRamadanDay);
 
       if (quizData.length) {
         shuffleArray(quizData);
@@ -624,22 +681,31 @@ function selectAndSpeak(voices, utterance, text) {
     }
   }
 
-  // ---------- প্রশ্ন দেখান ----------
+  // ---------- প্রশ্ন দেখান (বাংলা + অনূদিত ইংরেজি) ----------
   function showQuestion(index) {
     if (!quizData.length) return;
     const q = quizData[index];
+    
+    // বাংলা
     questionEl.innerText = q.question || 'প্রশ্ন নেই';
-    optA.innerHTML = `<i class="fas fa-cube"></i> A) ${q.optionA || ''}`;
-    optB.innerHTML = `<i class="fas fa-cube"></i> B) ${q.optionB || ''}`;
-    optC.innerHTML = `<i class="fas fa-cube"></i> C) ${q.optionC || ''}`;
+    optA.querySelector('.option-bn').innerHTML = `<i class="fas fa-cube"></i> A) ${q.optionA || ''}`;
+    optB.querySelector('.option-bn').innerHTML = `<i class="fas fa-cube"></i> B) ${q.optionB || ''}`;
+    optC.querySelector('.option-bn').innerHTML = `<i class="fas fa-cube"></i> C) ${q.optionC || ''}`;
+    
+    // ইংরেজি অনুবাদ
+    questionEnEl.innerText = q.questionEN || '';
+    optAEn.innerText = q.optionAEN || '';
+    optBEn.innerText = q.optionBEN || '';
+    optCEn.innerText = q.optionCEN || '';
+    
     correctAns = (q.correct || 'A').toUpperCase();
     removeHighlights();
     isAnswered = false;
 
-    // ভয়েস চালু থাকলে প্রশ্ন ও অপশন পড়ে শোনাও
+    // ইংলিশ ভয়েস চালু থাকলে প্রশ্ন (ইংরেজি) পড়ে শোনাও
     if (isVoiceEnabled) {
-      let speechText = q.question + '। অপশন এ: ' + q.optionA + '। অপশন বি: ' + q.optionB + '। অপশন সি: ' + q.optionC;
-      speakText(speechText);
+      let speechText = q.questionEN || q.question; // ইংরেজি না থাকলে বাংলা (তাও ইংরেজি উচ্চারণে)
+      speakEnglish(speechText);
     }
   }
 
@@ -656,17 +722,17 @@ function selectAndSpeak(voices, utterance, text) {
     const el = document.getElementById(`opt${correctAns}`);
     if (el) el.classList.add('option-correct');
 
-    // ভয়েস চালু থাকলে সঠিক উত্তর পড়ে শোনাও
+    // ইংলিশ ভয়েস - সঠিক উত্তর
     if (isVoiceEnabled) {
       let answerText = '';
-      if (correctAns === 'A') answerText = 'সঠিক উত্তর অপশন এ: ' + optA.innerText.replace('A)', '').trim();
-      else if (correctAns === 'B') answerText = 'সঠিক উত্তর অপশন বি: ' + optB.innerText.replace('B)', '').trim();
-      else if (correctAns === 'C') answerText = 'সঠিক উত্তর অপশন সি: ' + optC.innerText.replace('C)', '').trim();
-      speakText(answerText);
+      if (correctAns === 'A') answerText = optAEn.innerText || optA.innerText.replace('A)', '').trim();
+      else if (correctAns === 'B') answerText = optBEn.innerText || optB.innerText.replace('B)', '').trim();
+      else if (correctAns === 'C') answerText = optCEn.innerText || optC.innerText.replace('C)', '').trim();
+      speakEnglish('Correct answer is: ' + answerText);
     }
   }
 
-  // ---------- টাইমার ----------
+  // ---------- টাইমার (২০ সেকেন্ড) ----------
   function startTimer() {
     if (timerInterval) clearInterval(timerInterval);
     timeLeft = TOTAL_TIME;
@@ -677,7 +743,7 @@ function selectAndSpeak(voices, utterance, text) {
       if (timeLeft <= 0) {
         clearInterval(timerInterval);
         showCorrectAnswer();
-        setTimeout(nextQuestion, 3000);
+        setTimeout(nextQuestion, DELAY_NEXT);
       }
     }, 1000);
   }
@@ -695,26 +761,21 @@ function selectAndSpeak(voices, utterance, text) {
     startTimer();
   }
 
-  // ---------- ফুলস্ক্রিন ----------
-  function toggleFullscreen() {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen();
-    } else {
-      document.exitFullscreen();
-    }
-  }
-  document.getElementById('fullscreenBtn').addEventListener('click', toggleFullscreen);
-
   // ---------- শুরু করুন ----------
-  if (API_URL !== "YOUR_API_URL") {
-    fetchQuizzes();
-  } else {
-    questionEl.innerText = '🔧 API_URL সেট করুন!';
-  }
+  fetchQuizzes();
 
-  // ---------- স্পিচ সিন্থেসিস ভয়েস লোড হওয়া নিশ্চিত করা ----------
+  // ---------- ভয়েস রেডিনেস (ভয়েস লোড নিশ্চিত) ----------
   if (window.speechSynthesis) {
-    window.speechSynthesis.getVoices(); // কিছু ব্রাউজারে অ্যাসিঙ্ক
+    window.speechSynthesis.getVoices();
+    // iOS-এর জন্য প্রথমবার ইউজার ইন্টারঅ্যাকশনে ডামি স্পিচ
+    document.body.addEventListener('touchstart', function dummySpeech() {
+      if (window.speechSynthesis) {
+        const dummy = new SpeechSynthesisUtterance('');
+        dummy.volume = 0;
+        window.speechSynthesis.speak(dummy);
+        document.body.removeEventListener('touchstart', dummySpeech);
+      }
+    }, { once: true });
   }
 </script>
 </body>
