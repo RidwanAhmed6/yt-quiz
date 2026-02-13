@@ -128,8 +128,11 @@
   let isAnswered = false;
   let correctAns = '';
   let currentRamadanDay = 15;
-  let isVoiceEnabled = true;
+  
+  // ⭐ ভয়েস ডিফল্ট বন্ধ (iOS পলিসি)
+  let isVoiceEnabled = false;
 
+  // DOM এলিমেন্ট
   const questionEl = document.getElementById('question');
   const questionEnEl = document.getElementById('questionEn');
   const optA = document.getElementById('optA');
@@ -147,58 +150,119 @@
   const voiceToggleBtn = document.getElementById('voiceToggleBtn');
   const voiceIcon = document.getElementById('voiceIcon');
   const subscribeBtn = document.getElementById('subscribeBtn');
+  const fullscreenBtn = document.getElementById('fullscreenBtn');
 
-  subscribeBtn.addEventListener('click', () => window.open(YOUTUBE_CHANNEL_URL, '_blank'));
+  // ---------- সাবস্ক্রাইব ----------
+  if (subscribeBtn) {
+    subscribeBtn.addEventListener('click', () => window.open(YOUTUBE_CHANNEL_URL, '_blank'));
+  }
 
+  // ---------- ফুলস্ক্রিন ----------
+  if (fullscreenBtn) {
+    fullscreenBtn.addEventListener('click', function() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
+    });
+  }
+
+  // ---------- ইংলিশ ভয়েস (পুরোপুরি রিরাইট) ----------
   function speakEnglish(text) {
-    if (!isVoiceEnabled || !window.speechSynthesis) return;
+    // ভয়েস বন্ধ থাকলে বা টেক্সট না থাকলে কিছু করো না
+    if (!isVoiceEnabled || !window.speechSynthesis || !text) return;
+    
+    // চলমান স্পিচ থামাও
     window.speechSynthesis.cancel();
+
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = 'en-US';
     utterance.rate = 0.9;
     utterance.pitch = 0.8;
     utterance.volume = 1;
-    const voices = window.speechSynthesis.getVoices();
-    const preferredVoice = voices.find(v => v.lang.includes('en-GB') && v.name.includes('Male')) ||
-                          voices.find(v => v.lang.includes('en-US') && v.name.includes('Male')) ||
-                          voices.find(v => v.lang.includes('en-GB')) ||
-                          voices.find(v => v.lang.includes('en'));
-    if (preferredVoice) utterance.voice = preferredVoice;
-    window.speechSynthesis.speak(utterance);
-  }
 
-  voiceToggleBtn.addEventListener('click', () => {
-    isVoiceEnabled = !isVoiceEnabled;
-    voiceIcon.className = isVoiceEnabled ? 'fas fa-volume-up' : 'fas fa-volume-off';
-  });
-
-  audioToggleBtn.addEventListener('click', () => {
-    if (audioEl.paused) {
-      audioEl.play().catch(e => console.log(e));
-      audioIcon.className = 'fas fa-volume-up';
+    // ভয়েস লোড হয়েছে কিনা চেক করো
+    let voices = window.speechSynthesis.getVoices();
+    
+    if (voices.length > 0) {
+      // ইংলিশ ভয়েস খুঁজো: প্রেফারেন্স UK Male > US Male > যেকোনো ইংলিশ
+      const preferredVoice = voices.find(v => v.lang.includes('en-GB') && v.name.includes('Male')) ||
+                            voices.find(v => v.lang.includes('en-US') && v.name.includes('Male')) ||
+                            voices.find(v => v.lang.includes('en-GB')) ||
+                            voices.find(v => v.lang.includes('en'));
+      if (preferredVoice) utterance.voice = preferredVoice;
+      window.speechSynthesis.speak(utterance);
     } else {
-      audioEl.pause();
-      audioIcon.className = 'fas fa-volume-mute';
+      // ভয়েস লোড না হলে অপেক্ষা করো
+      window.speechSynthesis.onvoiceschanged = () => {
+        const loadedVoices = window.speechSynthesis.getVoices();
+        const preferredVoice = loadedVoices.find(v => v.lang.includes('en-GB') && v.name.includes('Male')) ||
+                              loadedVoices.find(v => v.lang.includes('en-US') && v.name.includes('Male')) ||
+                              loadedVoices.find(v => v.lang.includes('en-GB')) ||
+                              loadedVoices.find(v => v.lang.includes('en'));
+        if (preferredVoice) utterance.voice = preferredVoice;
+        window.speechSynthesis.speak(utterance);
+        window.speechSynthesis.onvoiceschanged = null;
+      };
     }
-  });
-  audioEl.play().catch(e => console.log('Autoplay prevented:', e));
-
-  function updateAsrBadge(day) {
-    asrDaySpan.innerText = (day && day >= 1 && day <= 30) ? day : '১৫';
   }
 
+  // ---------- ভয়েস টগল (ইউজার ক্লিকেই প্রথম ভয়েস) ----------
+  if (voiceToggleBtn) {
+    voiceToggleBtn.addEventListener('click', function() {
+      isVoiceEnabled = !isVoiceEnabled;
+      voiceIcon.className = isVoiceEnabled ? 'fas fa-volume-up' : 'fas fa-volume-off';
+      
+      // প্রথমবার চালু করার সাথে সাথে বর্তমান প্রশ্ন পড়ো
+      if (isVoiceEnabled && quizData.length > 0) {
+        const q = quizData[currentIdx];
+        // ইংরেজি টেক্সট পেলে সেটা পড়ো, না হলে বাংলা পড়ো (কিন্তু ইংরেজি উচ্চারণে)
+        const speechText = q.questionEN || q.question;
+        speakEnglish(speechText);
+      }
+    });
+  }
+
+  // ---------- অডিও কন্ট্রোল ----------
+  if (audioToggleBtn) {
+    audioToggleBtn.addEventListener('click', function() {
+      if (audioEl.paused) {
+        audioEl.play().catch(e => console.log(e));
+        audioIcon.className = 'fas fa-volume-up';
+      } else {
+        audioEl.pause();
+        audioIcon.className = 'fas fa-volume-mute';
+      }
+    });
+  }
+  // অটোপ্লে চেষ্টা (ব্রাউজার ব্লক করলে চুপ)
+  if (audioEl) {
+    audioEl.play().catch(e => console.log('Autoplay prevented:', e));
+  }
+
+  // ---------- আসর ব্যাজ আপডেট ----------
+  function updateAsrBadge(day) {
+    if (asrDaySpan) {
+      asrDaySpan.innerText = (day && day >= 1 && day <= 30) ? day : '১৫';
+    }
+  }
+
+  // ---------- API ফেচ ----------
   async function fetchQuizzes() {
     try {
+      // ক্যাশ বাইপাস
       const CACHE_BUSTER = '?t=' + new Date().getTime();
       const res = await fetch(API_URL + CACHE_BUSTER);
       if (!res.ok) throw new Error(`HTTP error ${res.status}`);
       allQuizData = await res.json();
       
       if (allQuizData.error) {
-        questionEl.innerText = '❌ ' + allQuizData.error;
+        if (questionEl) questionEl.innerText = '❌ ' + allQuizData.error;
         return;
       }
 
+      // 'day' কলাম আছে কিনা
       const hasDayColumn = allQuizData.length > 0 && allQuizData[0].hasOwnProperty('day');
       
       if (hasDayColumn) {
@@ -217,14 +281,15 @@
         showQuestion(0);
         startTimer();
       } else {
-        questionEl.innerText = '❌ কোনো কুইজ ডাটা নেই';
+        if (questionEl) questionEl.innerText = '❌ কোনো কুইজ ডাটা নেই';
       }
     } catch (e) {
       console.error(e);
-      questionEl.innerText = '⚠️ API সংযোগ ব্যর্থ, URL চেক করুন';
+      if (questionEl) questionEl.innerText = '⚠️ API সংযোগ ব্যর্থ, URL চেক করুন';
     }
   }
 
+  // ---------- শাফল ----------
   function shuffleArray(arr) {
     for (let i = arr.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -232,50 +297,51 @@
     }
   }
 
+  // ---------- প্রশ্ন দেখান (ভয়েস ইউজার ক্লিকেই) ----------
   function showQuestion(index) {
     if (!quizData.length) return;
     const q = quizData[index];
     
-    questionEl.innerText = q.question || 'প্রশ্ন নেই';
-    optA.querySelector('.option-bn').innerHTML = `<i class="fas fa-cube"></i> A) ${q.optionA || ''}`;
-    optB.querySelector('.option-bn').innerHTML = `<i class="fas fa-cube"></i> B) ${q.optionB || ''}`;
-    optC.querySelector('.option-bn').innerHTML = `<i class="fas fa-cube"></i> C) ${q.optionC || ''}`;
+    if (questionEl) questionEl.innerText = q.question || 'প্রশ্ন নেই';
     
-    questionEnEl.innerText = q.questionEN || '';
-    optAEn.innerText = q.optionAEN || '';
-    optBEn.innerText = q.optionBEN || '';
-    optCEn.innerText = q.optionCEN || '';
+    // বাংলা অপশন
+    const optABn = optA?.querySelector('.option-bn');
+    const optBBn = optB?.querySelector('.option-bn');
+    const optCBn = optC?.querySelector('.option-bn');
+    if (optABn) optABn.innerHTML = `<i class="fas fa-cube"></i> A) ${q.optionA || ''}`;
+    if (optBBn) optBBn.innerHTML = `<i class="fas fa-cube"></i> B) ${q.optionB || ''}`;
+    if (optCBn) optCBn.innerHTML = `<i class="fas fa-cube"></i> C) ${q.optionC || ''}`;
+    
+    // ইংরেজি টেক্সট
+    if (questionEnEl) questionEnEl.innerText = q.questionEN || '';
+    if (optAEn) optAEn.innerText = q.optionAEN || '';
+    if (optBEn) optBEn.innerText = q.optionBEN || '';
+    if (optCEn) optCEn.innerText = q.optionCEN || '';
     
     correctAns = (q.correct || 'A').toUpperCase();
     removeHighlights();
     isAnswered = false;
 
-    if (isVoiceEnabled) {
-      speakEnglish(q.questionEN || q.question);
-    }
+    // ⭐ ভয়েস অটো চালু নেই — শুধু ইউজার ক্লিক করলে হবে
   }
 
   function removeHighlights() {
-    optA.classList.remove('option-correct');
-    optB.classList.remove('option-correct');
-    optC.classList.remove('option-correct');
+    if (optA) optA.classList.remove('option-correct');
+    if (optB) optB.classList.remove('option-correct');
+    if (optC) optC.classList.remove('option-correct');
   }
 
+  // ---------- সঠিক উত্তর দেখান ----------
   function showCorrectAnswer() {
     if (isAnswered) return;
     isAnswered = true;
     const el = document.getElementById(`opt${correctAns}`);
     if (el) el.classList.add('option-correct');
-
-    if (isVoiceEnabled) {
-      let answerText = '';
-      if (correctAns === 'A') answerText = optAEn.innerText || optA.innerText.replace('A)', '').trim();
-      else if (correctAns === 'B') answerText = optBEn.innerText || optB.innerText.replace('B)', '').trim();
-      else if (correctAns === 'C') answerText = optCEn.innerText || optC.innerText.replace('C)', '').trim();
-      speakEnglish('Correct answer is: ' + answerText);
-    }
+    
+    // ⭐ সঠিক উত্তরে ভয়েস নেই (iOS এ ব্লক হয়)
   }
 
+  // ---------- টাইমার ----------
   function startTimer() {
     if (timerInterval) clearInterval(timerInterval);
     timeLeft = TOTAL_TIME;
@@ -292,10 +358,12 @@
   }
 
   function updateTimerUI(sec) {
-    timerSpan.innerText = sec;
-    const angle = (sec / TOTAL_TIME) * 360;
-    progressCircle.style.background = `conic-gradient(#ffd700 ${angle}deg, #2a2a2a ${angle}deg)`;
-    progressCircle.style.boxShadow = sec <= 5 ? '0 0 60px rgba(255,0,0,0.8)' : '0 0 40px rgba(255,215,0,0.5)';
+    if (timerSpan) timerSpan.innerText = sec;
+    if (progressCircle) {
+      const angle = (sec / TOTAL_TIME) * 360;
+      progressCircle.style.background = `conic-gradient(#ffd700 ${angle}deg, #2a2a2a ${angle}deg)`;
+      progressCircle.style.boxShadow = sec <= 5 ? '0 0 60px rgba(255,0,0,0.8)' : '0 0 40px rgba(255,215,0,0.5)';
+    }
   }
 
   function nextQuestion() {
@@ -304,15 +372,23 @@
     startTimer();
   }
 
-  fetchQuizzes();
+  // ---------- শুরু করুন ----------
+  if (API_URL !== "YOUR_APPS_SCRIPT_URL") {
+    fetchQuizzes();
+  } else {
+    if (questionEl) questionEl.innerText = '🔧 API_URL সেট করুন!';
+  }
 
+  // ---------- iOS ডামি স্পিচ (প্রথম ক্লিকে ভয়েস অ্যাক্টিভ) ----------
   if (window.speechSynthesis) {
     window.speechSynthesis.getVoices();
     document.body.addEventListener('touchstart', function dummySpeech() {
-      const dummy = new SpeechSynthesisUtterance('');
-      dummy.volume = 0;
-      window.speechSynthesis.speak(dummy);
-      document.body.removeEventListener('touchstart', dummySpeech);
+      if (window.speechSynthesis) {
+        const dummy = new SpeechSynthesisUtterance('');
+        dummy.volume = 0;
+        window.speechSynthesis.speak(dummy);
+        document.body.removeEventListener('touchstart', dummySpeech);
+      }
     }, { once: true });
   }
 </script>
