@@ -2,427 +2,168 @@
 <html lang="bn">
 <head>
   <meta charset="UTF-8">
-  <meta content='IE=edge' http-equiv='X-UA-Compatible'/>
-  <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'/>
-  <meta content='true' name='HandheldFriendly'/>
-  <meta content='yes' name='apple-mobile-web-app-capable'/>
-  <title>AudioQalb কুইজ চ্যালেঞ্জ | রমজান ডে ওয়াইজ</title>
-  <!-- Google Fonts & Font Awesome -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AudioQalb গিভওয়ে ফর্ম | ৫০টি প্রশ্ন</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
-    /* ---------- আপনার পূর্বের CSS (অপরিবর্তিত) ---------- */
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body { width: 100%; height: 100%; background: radial-gradient(circle at 50% 50%, #0b0e14, #030405); font-family: 'Cairo', 'Inter', sans-serif; color: white; display: flex; align-items: center; justify-content: center; position: relative; }
-    .watermark-logo { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 250px; height: auto; opacity: 0.1; pointer-events: none; z-index: 2; }
-    .live-container { position: relative; z-index: 10; width: 100%; max-width: 1600px; height: 100%; background: rgba(8, 12, 25, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 2px solid rgba(255, 215, 0, 0.35); box-shadow: 0 30px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,215,0,0.2) inset; display: flex; flex-direction: column; padding: 20px 25px; animation: borderGlow 4s infinite alternate; transition: padding 0.3s ease, border-radius 0.3s ease; overflow: hidden; }
-    @keyframes borderGlow { 0% { border-color: rgba(255,215,0,0.25); box-shadow: 0 30px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,215,0,0.15) inset; } 100% { border-color: rgba(255,215,0,0.6); box-shadow: 0 40px 80px rgba(255,215,0,0.2), 0 0 0 3px rgba(255,215,0,0.2) inset; } }
-    .live-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 2px dashed rgba(255,215,0,0.4); margin-bottom: 16px; flex-shrink: 0; }
-    .logo { display: flex; align-items: center; gap: 12px; }
-    .logo-img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid #ffd700; }
-    .logo span { font-size: 32px; font-weight: 900; background: linear-gradient(145deg, #ffe082, #ffb300); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 1px; }
-    .day-badge { background: rgba(0,0,0,0.6); padding: 8px 20px; border-radius: 40px; font-size: 24px; font-weight: 700; color: #ffd700; border: 1px solid #ffd700; box-shadow: 0 0 20px rgba(255,215,0,0.3); backdrop-filter: blur(4px); white-space: nowrap; }
-    .question-area { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: center; align-items: center; background: rgba(0,0,0,0.25); border-radius: 40px; margin: 10px 0; padding: 20px; border: 1px solid rgba(255,215,0,0.2); min-height: 0; }
-    .question-text { font-size: 36px; font-weight: 900; line-height: 1.4; text-align: center; color: #fff; text-shadow: 0 4px 20px rgba(0,0,0,0.8); word-break: break-word; animation: fadeSlide 0.8s ease; }
-    .question-english { font-size: 24px; font-weight: 500; color: #ffd700; margin-top: 10px; font-family: 'Inter', sans-serif; opacity: 0.9; }
-    .options-row { display: grid; grid-template-columns: 1fr; gap: 15px; width: 100%; margin: 15px 0; flex-shrink: 0; }
-    .option-card { background: linear-gradient(145deg, #16202e, #0c111b); border: 2px solid rgba(255,215,0,0.3); border-radius: 30px; padding: 18px 12px; font-size: 24px; font-weight: 700; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; box-shadow: 0 10px 0 #00000055, 0 0 30px rgba(0,0,0,0.5); transition: all 0.2s; text-shadow: 0 2px 5px black; }
-    .option-bn { display: flex; align-items: center; gap: 12px; }
-    .option-bn i { color: #ffd700; font-size: 28px; filter: drop-shadow(0 0 8px gold); }
-    .option-en { font-size: 18px; color: #ffd700; font-family: 'Inter', sans-serif; font-weight: 500; }
-    .option-correct { background: #1e4a1e !important; border-color: #ffd700 !important; box-shadow: 0 0 60px #2e7d32, 0 10px 0 #0a2e0a !important; }
-    .timer-section { display: flex; flex-direction: column; align-items: flex-start; gap: 15px; margin-top: 5px; flex-shrink: 0; }
-    .circular-timer { display: flex; align-items: center; gap: 20px; width: 100%; justify-content: space-between; }
-    .progress-circle { width: 100px; height: 100px; border-radius: 50%; background: conic-gradient(#ffd700 0deg, #2a2a2a 0deg); display: flex; align-items: center; justify-content: center; transition: background 0.1s linear; box-shadow: 0 0 40px rgba(255,215,0,0.4); }
-    .inner-circle { width: 82px; height: 82px; border-radius: 50%; background: #0a0f1e; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 3px solid rgba(255,215,0,0.6); }
-    .inner-circle span { font-size: 40px; font-weight: 900; color: #ffd700; line-height: 1; }
-    .inner-circle small { color: rgba(255,255,255,0.9); font-size: 16px; }
-    .shuffle-badge { background: rgba(255,215,0,0.1); padding: 8px 20px; border-radius: 50px; border: 1px dashed gold; font-size: 20px; white-space: nowrap; }
-    .controls-wrapper { display: flex; gap: 15px; align-items: center; width: 100%; justify-content: flex-end; flex-wrap: wrap; }
-    .audio-control, .voice-control { display: flex; align-items: center; gap: 12px; background: rgba(0,0,0,0.5); padding: 8px 20px; border-radius: 60px; border: 1px solid rgba(255,215,0,0.6); }
-    .audio-control button, .voice-control button { background: transparent; border: none; color: #ffd700; font-size: 28px; cursor: pointer; transition: 0.2s; }
-    .subscribe-btn { background: #ff0000; border: none; color: white; padding: 12px 28px; border-radius: 60px; font-size: 24px; font-weight: 700; cursor: pointer; backdrop-filter: blur(6px); display: flex; gap: 12px; align-items: center; transition: 0.3s; border: 1px solid rgba(255,255,255,0.3); }
-    .subscribe-btn:hover { background: #cc0000; transform: scale(1.05); }
-    .subscribe-btn i { color: white; }
-    .live-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; color: rgba(255,215,0,0.8); font-size: 20px; flex-shrink: 0; }
-    @keyframes fadeSlide { 0% { opacity: 0; transform: translateY(30px); } 100% { opacity: 1; transform: translateY(0); } }
-    @media screen and (orientation: landscape) and (max-height: 500px) { .live-container { padding: 12px 20px; border-radius: 0; } .logo-img { width: 40px; height: 40px; } .logo span { font-size: 24px; } .day-badge { font-size: 18px; padding: 6px 16px; } .question-text { font-size: 26px; } .question-english { font-size: 18px; } .options-row { grid-template-columns: repeat(3, 1fr); gap: 10px; } .option-card { font-size: 20px; padding: 10px; } .option-en { font-size: 14px; } .progress-circle { width: 70px; height: 70px; } .inner-circle { width: 58px; height: 58px; } .inner-circle span { font-size: 28px; } .subscribe-btn { padding: 8px 20px; font-size: 20px; } .watermark-logo { width: 150px; } }
-    @media screen and (min-width: 1024px) and (orientation: landscape) { .live-container { width: 95vw; height: 90vh; border-radius: 60px; padding: 30px 50px; } .logo-img { width: 70px; height: 70px; } .logo span { font-size: 48px; } .day-badge { font-size: 32px; padding: 12px 32px; } .question-text { font-size: 64px; } .question-english { font-size: 32px; } .options-row { grid-template-columns: repeat(3, 1fr); gap: 30px; } .option-card { font-size: 40px; padding: 30px 15px; } .option-en { font-size: 24px; } .progress-circle { width: 140px; height: 140px; } .inner-circle { width: 118px; height: 118px; } .inner-circle span { font-size: 58px; } .timer-section { flex-direction: row; align-items: center; justify-content: space-between; } .subscribe-btn { padding: 18px 40px; font-size: 32px; } .watermark-logo { width: 350px; } }
-    @supports (padding: max(0px)) { .live-container { padding-left: max(20px, env(safe-area-inset-left)); padding-right: max(20px, env(safe-area-inset-right)); padding-bottom: max(16px, env(safe-area-inset-bottom)); } }
-    body, html { overflow: hidden; }
-
-    /* ---------- স্টার্ট বাটন ওভারলে ---------- */
-    .start-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.9);
-      backdrop-filter: blur(10px);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-      transition: opacity 0.8s ease;
-    }
-    .start-btn {
-      background: linear-gradient(145deg, #ffd700, #f9a825);
-      border: none;
-      color: #000;
-      padding: 25px 60px;
-      border-radius: 80px;
-      font-size: 48px;
-      font-weight: 900;
-      cursor: pointer;
-      box-shadow: 0 20px 40px rgba(255,215,0,0.4);
-      display: flex;
-      gap: 20px;
-      align-items: center;
-      transition: transform 0.3s;
-    }
-    .start-btn:hover {
-      transform: scale(1.1);
-    }
-    .start-btn i {
-      font-size: 60px;
-    }
-    .start-hint {
-      margin-top: 30px;
-      color: #ffd700;
-      font-size: 24px;
-    }
+    body { background: radial-gradient(circle at 50% 50%, #0b0e14, #030405); font-family: 'Cairo', 'Inter', sans-serif; color: white; min-height: 100vh; padding: 20px; }
+    .container { max-width: 1000px; margin: 0 auto; background: rgba(8,12,25,0.85); backdrop-filter: blur(20px); border: 2px solid rgba(255,215,0,0.35); border-radius: 40px; padding: 30px; box-shadow: 0 30px 60px rgba(0,0,0,0.7); }
+    h1 { font-size: 48px; color: #ffd700; text-align: center; margin-bottom: 10px; }
+    .notice { background: #cc0000; border: 2px solid #ffd700; border-radius: 60px; padding: 15px; margin: 20px 0; text-align: center; font-size: 24px; }
+    .notice i { color: #ffd700; margin-right: 10px; }
+    marquee { font-size: 20px; background: rgba(255,215,0,0.2); padding: 10px; border-radius: 40px; margin-bottom: 20px; }
+    .form-group { margin-bottom: 20px; }
+    label { display: block; font-size: 24px; margin-bottom: 5px; color: #ffd700; }
+    input, select { width: 100%; padding: 15px; font-size: 20px; border-radius: 30px; border: 2px solid #ffd700; background: rgba(0,0,0,0.5); color: white; font-family: 'Inter', sans-serif; }
+    input:focus, select:focus { outline: none; border-color: #ffaa00; }
+    .quiz-question { background: rgba(255,215,0,0.1); border: 1px solid #ffd700; border-radius: 30px; padding: 20px; margin-bottom: 15px; }
+    .quiz-question p { font-size: 24px; margin-bottom: 10px; }
+    .options { display: flex; gap: 20px; flex-wrap: wrap; }
+    .options label { display: flex; align-items: center; gap: 5px; font-size: 20px; color: white; cursor: pointer; }
+    .options input[type="radio"] { width: auto; margin-right: 5px; accent-color: #ffd700; }
+    .submit-btn { background: #ff0000; border: 2px solid #ffd700; color: white; font-size: 36px; font-weight: 900; padding: 20px 40px; border-radius: 60px; cursor: pointer; width: 100%; transition: transform 0.3s; margin-top: 20px; }
+    .submit-btn:hover { transform: scale(1.05); background: #cc0000; }
+    .footer { text-align: center; margin-top: 20px; color: rgba(255,215,0,0.8); }
   </style>
 </head>
 <body>
-
-  <!-- স্টার্ট ওভারলে -->
-  <div id="startOverlay" class="start-overlay">
-    <button id="startQuizBtn" class="start-btn">
-      <i class="fas fa-play"></i> স্টার্ট কুইজ
-    </button>
-    <div class="start-hint">
-      <i class="fas fa-hand-pointer"></i> স্ট্রিমার, শুরু করতে ক্লিক করুন
-    </div>
-  </div>
-
-  <img src="https://github.com/RidwanAhmed6/yt-quiz/blob/main/IMG_1067.png?raw=true" alt="AudioQalb Logo" class="watermark-logo">
-
-<div class="live-container" id="app">
-  <div class="live-header">
-    <div class="logo">
-      <img src="https://github.com/RidwanAhmed6/yt-quiz/blob/main/IMG_1067.png?raw=true" alt="AudioQalb" class="logo-img">
-      <span>AudioQalb কুইজ চ্যালেঞ্জ</span>
-    </div>
-    <div class="day-badge" id="ramadanDisplay">
-      <i class="fas fa-calendar-alt"></i> আসর <span id="asrDay">১৫</span>
-    </div>
-  </div>
-
-  <div class="question-area">
-    <div class="question-text" id="question">প্রশ্ন লোড হচ্ছে…</div>
-    <div class="question-english" id="questionEn"></div>
-  </div>
-
-  <div class="options-row" id="optionsRow">
-    <div class="option-card" id="optA"><span class="option-bn"><i class="fas fa-cube"></i> A) ...</span><span class="option-en" id="optAEn"></span></div>
-    <div class="option-card" id="optB"><span class="option-bn"><i class="fas fa-cube"></i> B) ...</span><span class="option-en" id="optBEn"></span></div>
-    <div class="option-card" id="optC"><span class="option-bn"><i class="fas fa-cube"></i> C) ...</span><span class="option-en" id="optCEn"></span></div>
-  </div>
-
-  <div class="timer-section">
-    <div class="circular-timer">
-      <div class="progress-circle" id="progressCircle">
-        <div class="inner-circle">
-          <span id="timerNumber">20</span>
-          <small>সেকেন্ড</small>
-        </div>
-      </div>
-      <div class="shuffle-badge"><i class="fas fa-shuffle"></i> স্বয়ংক্রিয় শাফল</div>
-    </div>
+  <div class="container">
+    <h1><i class="fas fa-gift"></i> AudioQalb গিভওয়ে ফর্ম</h1>
     
-    <div class="controls-wrapper">
-      <div class="audio-control">
-        <button id="audioToggleBtn"><i id="audioIcon" class="fas fa-volume-up"></i></button>
-        <span style="color: white;">নাশিদ</span>
+    <!-- নোটিশ মার্কি -->
+    <div class="notice">
+      <i class="fas fa-bullhorn"></i> বিজ্ঞপ্তি
+    </div>
+    <marquee behavior="scroll" direction="left" scrollamount="5">
+      <i class="fas fa-trophy"></i> বিজয়ীদের নাম আমাদের চ্যানেলে পোস্ট করে জানিয়ে দেওয়া হবে। <i class="fas fa-trophy"></i> একবারই ফর্ম সাবমিট করা যাবে। সময় শেষ রাত ৯টা।
+    </marquee>
+
+    <form id="entryForm">
+      <!-- ব্যক্তিগত তথ্য -->
+      <div class="form-group">
+        <label><i class="fas fa-user"></i> আপনার নাম</label>
+        <input type="text" id="fullName" placeholder="আপনার পূর্ণ নাম" required>
       </div>
-      <div class="voice-control">
-        <button id="voiceToggleBtn"><i id="voiceIcon" class="fas fa-volume-up"></i></button>
-        <span style="color: white;">English Voice</span>
+      <div class="form-group">
+        <label><i class="fas fa-map-marker-alt"></i> ঠিকানা</label>
+        <input type="text" id="address" placeholder="আপনার ঠিকানা" required>
       </div>
-      <button class="subscribe-btn" id="subscribeBtn"><i class="fab fa-youtube"></i> সাবস্ক্রাইব</button>
+      <div class="form-group">
+        <label><i class="fas fa-phone-alt"></i> মোবাইল নম্বর</label>
+        <input type="tel" id="mobile" placeholder="০১XXXXXXXXX" required>
+      </div>
+
+      <!-- কুইজ প্রশ্নগুলো ডায়নামিকভাবে লোড হবে -->
+      <div id="questionsContainer"></div>
+
+      <button type="submit" class="submit-btn"><i class="fas fa-paper-plane"></i> সাবমিট</button>
+    </form>
+
+    <div class="footer">
+      <i class="fas fa-star"></i> শুধুমাত্র একবার সাবমিট করুন
     </div>
   </div>
 
-  <!-- <div class="live-footer">
-    <span><i class="fas fa-video"></i> YouTube Live 16:9</span>
-    <span><i class="fas fa-star"></i> আসর (Day) সীট থেকে স্বয়ংক্রিয়</span>
-  </div> -->
-</div>
+  <script>
+    // আপনার Apps Script URL (একই)
+    const API_URL = "https://script.google.com/macros/s/AKfycbzOuyVqqahjf02keFaTgA-7O4lCfNZYnbFTs98VfLy_r-Qd5HwX-pZ5cXRsgyEy1NNWIQ/exec";
 
-<audio id="backgroundAudio" loop playsinline>
-  <source src="https://github.com/RidwanAhmed6/yt-quiz/raw/refs/heads/main/copy_34F68A0F-7768-4ECA-B7C4-7774C0812A01.mp3" type="audio/mpeg">
-</audio>
+    let quizQuestions = [];
 
-<script>
-  // ============================================
-  // AudioQalb কুইজ চ্যালেঞ্জ – ফাইনাল (অটো স্টার্ট + ভয়েস + নাশিদ)
-  // ============================================
+    // ফর্ম লোড হওয়ার সাথে সাথে কুইজ প্রশ্ন লোড করুন
+    async function loadQuestions() {
+      try {
+        const res = await fetch(API_URL + '?t=' + new Date().getTime());
+        if (!res.ok) throw new Error('Network error');
+        const data = await res.json();
+        // শুধু প্রশ্নগুলো নিন (day নির্বিশেষে সব, অথবা আপনার পছন্দমত)
+        quizQuestions = data.slice(0, 50); // প্রথম ৫০টি প্রশ্ন নিন
+        renderQuestions();
+      } catch (error) {
+        console.error(error);
+        document.getElementById('questionsContainer').innerHTML = '<p style="color:red;">প্রশ্ন লোড করতে ব্যর্থ। পরে আবার চেষ্টা করুন।</p>';
+      }
+    }
 
-  const API_URL = "https://script.google.com/macros/s/AKfycbwbaipxG8VktroYNoOquyKfd4WcWgSKn-t7o3jSee0bZcaqYEZ8Z7FEAxKgDFVH32ewuQ/exec";
-  const TOTAL_TIME = 17;
-  const DELAY_NEXT = 2000;
-  const YOUTUBE_CHANNEL_URL = "https://www.youtube.com/@AudioQalb?sub_confirmation=1";
+    function renderQuestions() {
+      const container = document.getElementById('questionsContainer');
+      container.innerHTML = '';
+      quizQuestions.forEach((q, index) => {
+        const qDiv = document.createElement('div');
+        qDiv.className = 'quiz-question';
+        qDiv.innerHTML = `
+          <p><strong>প্রশ্ন ${index+1}:</strong> ${q.question} <br><small style="color:#ffd700;">${q.questionEN || ''}</small></p>
+          <div class="options">
+            <label><input type="radio" name="q${index}" value="A" required> A) ${q.optionA} <small style="color:#ffd700;">${q.optionAEN || ''}</small></label>
+            <label><input type="radio" name="q${index}" value="B" required> B) ${q.optionB} <small style="color:#ffd700;">${q.optionBEN || ''}</small></label>
+            <label><input type="radio" name="q${index}" value="C" required> C) ${q.optionC} <small style="color:#ffd700;">${q.optionCEN || ''}</small></label>
+          </div>
+        `;
+        container.appendChild(qDiv);
+      });
+    }
 
-  let allQuizData = [];
-  let quizData = [];
-  let currentIdx = 0;
-  let timerInterval = null;
-  let timeLeft = TOTAL_TIME;
-  let isAnswered = false;
-  let correctAns = '';
-  let currentRamadanDay = 15;
-  
-  // ভয়েস এবং অডিও স্টার্ট কন্ট্রোল
-  let isVoiceEnabled = false;   // স্টার্ট বাটন ক্লিকের পর true হবে
-  let quizStarted = false;
+    // ফর্ম সাবমিট ইভেন্ট
+    document.getElementById('entryForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
 
-  // DOM এলিমেন্ট
-  const questionEl = document.getElementById('question');
-  const questionEnEl = document.getElementById('questionEn');
-  const optA = document.getElementById('optA');
-  const optB = document.getElementById('optB');
-  const optC = document.getElementById('optC');
-  const optAEn = document.getElementById('optAEn');
-  const optBEn = document.getElementById('optBEn');
-  const optCEn = document.getElementById('optCEn');
-  const timerSpan = document.getElementById('timerNumber');
-  const progressCircle = document.getElementById('progressCircle');
-  const asrDaySpan = document.getElementById('asrDay');
-  const audioEl = document.getElementById('backgroundAudio');
-  const audioToggleBtn = document.getElementById('audioToggleBtn');
-  const audioIcon = document.getElementById('audioIcon');
-  const voiceToggleBtn = document.getElementById('voiceToggleBtn');
-  const voiceIcon = document.getElementById('voiceIcon');
-  const subscribeBtn = document.getElementById('subscribeBtn');
-  const startOverlay = document.getElementById('startOverlay');
-  const startBtn = document.getElementById('startQuizBtn');
+      // ব্যক্তিগত তথ্য
+      const name = document.getElementById('fullName').value;
+      const address = document.getElementById('address').value;
+      const mobile = document.getElementById('mobile').value;
 
-  // ---------- ইংলিশ ভয়েস ফাংশন ----------
-  function speakEnglish(text) {
-    if (!isVoiceEnabled || !window.speechSynthesis || !text) return;
-    window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = 'en-US';
-    utterance.rate = 0.9;
-    utterance.pitch = 0.8;
-    utterance.volume = 1;
-    let voices = window.speechSynthesis.getVoices();
-    if (voices.length > 0) {
-      const preferredVoice = voices.find(v => v.lang.includes('en-GB') && v.name.includes('Male')) ||
-                            voices.find(v => v.lang.includes('en-US') && v.name.includes('Male')) ||
-                            voices.find(v => v.lang.includes('en-GB')) ||
-                            voices.find(v => v.lang.includes('en'));
-      if (preferredVoice) utterance.voice = preferredVoice;
-      window.speechSynthesis.speak(utterance);
-    } else {
-      window.speechSynthesis.onvoiceschanged = () => {
-        const loadedVoices = window.speechSynthesis.getVoices();
-        const preferredVoice = loadedVoices.find(v => v.lang.includes('en-GB') && v.name.includes('Male')) ||
-                              loadedVoices.find(v => v.lang.includes('en-US') && v.name.includes('Male')) ||
-                              loadedVoices.find(v => v.lang.includes('en-GB')) ||
-                              loadedVoices.find(v => v.lang.includes('en'));
-        if (preferredVoice) utterance.voice = preferredVoice;
-        window.speechSynthesis.speak(utterance);
-        window.speechSynthesis.onvoiceschanged = null;
+      // উত্তর সংগ্রহ
+      const answers = [];
+      for (let i = 0; i < quizQuestions.length; i++) {
+        const radios = document.getElementsByName(`q${i}`);
+        let selected = null;
+        for (const radio of radios) {
+          if (radio.checked) {
+            selected = radio.value;
+            break;
+          }
+        }
+        answers.push(selected || '');
+      }
+
+      // ক্লায়েন্ট-সাইডে স্কোর গণনা (ঐচ্ছিক, তবে ব্যাকএন্ডে নির্ভরযোগ্য গণনা হবে)
+      // আমরা পুরো ডেটা ব্যাকএন্ডে পাঠাব, সেখানেই স্কোর হবে
+
+      // ডেটা প্যাকেজ
+      const payload = {
+        action: 'submitEntry',
+        name: name,
+        address: address,
+        mobile: mobile,
+        answers: answers,
+        timestamp: new Date().toISOString()
       };
-    }
-  }
 
-  // ---------- অডিও কন্ট্রোল (ইউজার ম্যানুয়াল টগল) ----------
-  if (audioToggleBtn) {
-    audioToggleBtn.addEventListener('click', function() {
-      if (audioEl.paused) {
-        audioEl.play().catch(e => console.log(e));
-        audioIcon.className = 'fas fa-volume-up';
-      } else {
-        audioEl.pause();
-        audioIcon.className = 'fas fa-volume-mute';
+      try {
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          mode: 'no-cors', // CORS এড়াতে no-cors ব্যবহার করা হচ্ছে (তবে response পাওয়া যাবে না)
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        // no-cors মোডে response এর status পাওয়া যায় না, তাই আমরা ধরে নিই সফল
+        alert('আপনার তথ্য সফলভাবে জমা হয়েছে! অংশগ্রহণের জন্য ধন্যবাদ।');
+        // ফর্ম রিসেট বা অন্য কিছু
+        document.getElementById('entryForm').reset();
+        // প্রশ্নপত্র পুনরায় লোড করলে রেডিও রিসেট হবে
+        loadQuestions(); 
+
+      } catch (error) {
+        console.error('Submission error:', error);
+        alert('সাবমিট করতে সমস্যা হয়েছে। আবার চেষ্টা করুন।');
       }
     });
-  }
 
-  // ---------- ভয়েস টগল (ম্যানুয়াল) ----------
-  if (voiceToggleBtn) {
-    voiceToggleBtn.addEventListener('click', function() {
-      isVoiceEnabled = !isVoiceEnabled;
-      voiceIcon.className = isVoiceEnabled ? 'fas fa-volume-up' : 'fas fa-volume-off';
-      if (isVoiceEnabled && quizData.length > 0) {
-        const q = quizData[currentIdx];
-        speakEnglish(q.questionEN || q.question);
-      }
-    });
-  }
-
-  // ---------- সাবস্ক্রাইব ----------
-  if (subscribeBtn) {
-    subscribeBtn.addEventListener('click', () => window.open(YOUTUBE_CHANNEL_URL, '_blank'));
-  }
-
-  // ---------- আসর ব্যাজ ----------
-  function updateAsrBadge(day) {
-    if (asrDaySpan) asrDaySpan.innerText = (day && day >= 1 && day <= 30) ? day : '১৫';
-  }
-
-  // ---------- API ফেচ (ক্যাশ বাইপাস) ----------
-  async function fetchQuizzes() {
-    try {
-      const CACHE_BUSTER = '?t=' + new Date().getTime();
-      const res = await fetch(API_URL + CACHE_BUSTER);
-      if (!res.ok) throw new Error(`HTTP error ${res.status}`);
-      allQuizData = await res.json();
-      if (allQuizData.error) {
-        if (questionEl) questionEl.innerText = '❌ ' + allQuizData.error;
-        return;
-      }
-      const hasDayColumn = allQuizData.length > 0 && allQuizData[0].hasOwnProperty('day');
-      if (hasDayColumn) {
-        const firstDay = parseInt(allQuizData[0].day);
-        if (!isNaN(firstDay) && firstDay >= 1 && firstDay <= 30) currentRamadanDay = firstDay;
-        quizData = allQuizData.filter(q => parseInt(q.day) === currentRamadanDay);
-        if (quizData.length === 0) quizData = [...allQuizData];
-      } else {
-        quizData = [...allQuizData];
-      }
-      updateAsrBadge(currentRamadanDay);
-      if (quizData.length) {
-        shuffleArray(quizData);
-        showQuestion(0);
-        // টাইমার এখন স্টার্ট করবে না, অপেক্ষা করবে স্টার্ট বাটন ক্লিকের জন্য
-      } else {
-        if (questionEl) questionEl.innerText = '❌ কোনো কুইজ ডাটা নেই';
-      }
-    } catch (e) {
-      console.error(e);
-      if (questionEl) questionEl.innerText = '⚠️ API সংযোগ ব্যর্থ, URL চেক করুন';
-    }
-  }
-
-  function shuffleArray(arr) {
-    for (let i = arr.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [arr[i], arr[j]] = [arr[j], arr[i]];
-    }
-  }
-
-  // ---------- প্রশ্ন দেখানো ----------
-  function showQuestion(index) {
-    if (!quizData.length) return;
-    const q = quizData[index];
-    if (questionEl) questionEl.innerText = q.question || 'প্রশ্ন নেই';
-    const optABn = optA?.querySelector('.option-bn');
-    const optBBn = optB?.querySelector('.option-bn');
-    const optCBn = optC?.querySelector('.option-bn');
-    if (optABn) optABn.innerHTML = `<i class="fas fa-cube"></i> A) ${q.optionA || ''}`;
-    if (optBBn) optBBn.innerHTML = `<i class="fas fa-cube"></i> B) ${q.optionB || ''}`;
-    if (optCBn) optCBn.innerHTML = `<i class="fas fa-cube"></i> C) ${q.optionC || ''}`;
-    if (questionEnEl) questionEnEl.innerText = q.questionEN || '';
-    if (optAEn) optAEn.innerText = q.optionAEN || '';
-    if (optBEn) optBEn.innerText = q.optionBEN || '';
-    if (optCEn) optCEn.innerText = q.optionCEN || '';
-    correctAns = (q.correct || 'A').toUpperCase();
-    removeHighlights();
-    isAnswered = false;
-
-    // কুইজ স্টার্ট হয়ে থাকলে এবং ভয়েস চালু থাকলে স্বয়ংক্রিয় পড়া
-    if (quizStarted && isVoiceEnabled) {
-      speakEnglish(q.questionEN || q.question);
-    }
-  }
-
-  function removeHighlights() {
-    if (optA) optA.classList.remove('option-correct');
-    if (optB) optB.classList.remove('option-correct');
-    if (optC) optC.classList.remove('option-correct');
-  }
-
-  function showCorrectAnswer() {
-    if (isAnswered) return;
-    isAnswered = true;
-    const el = document.getElementById(`opt${correctAns}`);
-    if (el) el.classList.add('option-correct');
-  }
-
-  // ---------- টাইমার ----------
-  function startTimer() {
-    if (timerInterval) clearInterval(timerInterval);
-    timeLeft = TOTAL_TIME;
-    updateTimerUI(timeLeft);
-    timerInterval = setInterval(() => {
-      timeLeft--;
-      updateTimerUI(timeLeft);
-      if (timeLeft <= 0) {
-        clearInterval(timerInterval);
-        showCorrectAnswer();
-        setTimeout(nextQuestion, DELAY_NEXT);
-      }
-    }, 1000);
-  }
-
-  function updateTimerUI(sec) {
-    if (timerSpan) timerSpan.innerText = sec;
-    if (progressCircle) {
-      const angle = (sec / TOTAL_TIME) * 360;
-      progressCircle.style.background = `conic-gradient(#ffd700 ${angle}deg, #2a2a2a ${angle}deg)`;
-      progressCircle.style.boxShadow = sec <= 5 ? '0 0 60px rgba(255,0,0,0.8)' : '0 0 40px rgba(255,215,0,0.5)';
-    }
-  }
-
-  function nextQuestion() {
-    currentIdx = (currentIdx + 1) % quizData.length;
-    showQuestion(currentIdx);
-    startTimer();
-  }
-
-  // ---------- স্টার্ট বাটন ইভেন্ট ----------
-  startBtn.addEventListener('click', function() {
-    // ভয়েস এবং অডিও অ্যাক্টিভেট
-    isVoiceEnabled = true;
-    quizStarted = true;
-    voiceIcon.className = 'fas fa-volume-up';
-    audioIcon.className = 'fas fa-volume-up';
-    
-    // নাশিদ প্লে
-    audioEl.play().catch(e => console.log('Audio play failed:', e));
-    
-    // ডামি স্পিচ (iOS এর জন্য)
-    if (window.speechSynthesis) {
-      const dummy = new SpeechSynthesisUtterance('');
-      dummy.volume = 0;
-      window.speechSynthesis.speak(dummy);
-    }
-    
-    // প্রথম প্রশ্নে ভয়েস চালু
-    if (quizData.length > 0) {
-      const q = quizData[currentIdx];
-      speakEnglish(q.questionEN || q.question);
-    }
-    
-    // টাইমার শুরু
-    startTimer();
-    
-    // ওভারলে ফেইড আউট
-    startOverlay.style.opacity = '0';
-    setTimeout(() => {
-      startOverlay.style.display = 'none';
-    }, 800);
-  });
-
-  // ---------- ডাটা লোড ----------
-  fetchQuizzes();
-
-  // ---------- iOS ডামি স্পিচ (ইতিমধ্যেই স্টার্ট বাটনে আছে) ----------
-</script>
+    // শুরুতে প্রশ্ন লোড করুন
+    loadQuestions();
+  </script>
 </body>
 </html>
