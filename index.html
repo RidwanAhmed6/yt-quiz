@@ -11,381 +11,50 @@
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
-    /* ----- গ্লোবাল রিসেট ----- */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html, body {
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle at 50% 50%, #0b0e14, #030405);
-      font-family: 'Cairo', 'Inter', sans-serif;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-    }
-
-    /* ----- ওয়াটারমার্ক লোগো (স্ক্রিনের মাঝে) ----- */
-    .watermark-logo {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 250px;
-      height: auto;
-      opacity: 0.1;
-      pointer-events: none;
-      z-index: 2;
-    }
-
-    .live-container {
-      position: relative;
-      z-index: 10;
-      width: 100%;
-      max-width: 1600px;
-      height: 100%;
-      background: rgba(8, 12, 25, 0.85);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 2px solid rgba(255, 215, 0, 0.35);
-      box-shadow: 0 30px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,215,0,0.2) inset;
-      display: flex;
-      flex-direction: column;
-      padding: 20px 25px;
-      animation: borderGlow 4s infinite alternate;
-      transition: padding 0.3s ease, border-radius 0.3s ease;
-      overflow: hidden;
-    }
-
-    @keyframes borderGlow {
-      0% { border-color: rgba(255,215,0,0.25); box-shadow: 0 30px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,215,0,0.15) inset; }
-      100% { border-color: rgba(255,215,0,0.6); box-shadow: 0 40px 80px rgba(255,215,0,0.2), 0 0 0 3px rgba(255,215,0,0.2) inset; }
-    }
-
-    /* ----- হেডার (লোগো + আসর) ----- */
-    .live-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-bottom: 12px;
-      border-bottom: 2px dashed rgba(255,215,0,0.4);
-      margin-bottom: 16px;
-      flex-shrink: 0;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .logo-img {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid #ffd700;
-    }
-
-    .logo span {
-      font-size: 32px;
-      font-weight: 900;
-      background: linear-gradient(145deg, #ffe082, #ffb300);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      letter-spacing: 1px;
-    }
-
-    .day-badge {
-      background: rgba(0,0,0,0.6);
-      padding: 8px 20px;
-      border-radius: 40px;
-      font-size: 24px;
-      font-weight: 700;
-      color: #ffd700;
-      border: 1px solid #ffd700;
-      box-shadow: 0 0 20px rgba(255,215,0,0.3);
-      backdrop-filter: blur(4px);
-      white-space: nowrap;
-    }
-
-    /* ----- প্রশ্ন এলাকা (বাংলা + ইংরেজি অনুবাদ) ----- */
-    .question-area {
-      flex: 1 1 auto;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      background: rgba(0,0,0,0.25);
-      border-radius: 40px;
-      margin: 10px 0;
-      padding: 20px;
-      border: 1px solid rgba(255,215,0,0.2);
-      min-height: 0;
-    }
-
-    .question-text {
-      font-size: 36px;
-      font-weight: 900;
-      line-height: 1.4;
-      text-align: center;
-      color: #fff;
-      text-shadow: 0 4px 20px rgba(0,0,0,0.8);
-      word-break: break-word;
-      animation: fadeSlide 0.8s ease;
-    }
-
-    .question-english {
-      font-size: 24px;
-      font-weight: 500;
-      color: #ffd700;
-      margin-top: 10px;
-      font-family: 'Inter', sans-serif;
-      opacity: 0.9;
-    }
-
-    /* ----- অপশন গ্রিড (বাংলা + ইংরেজি অনুবাদ) ----- */
-    .options-row {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 15px;
-      width: 100%;
-      margin: 15px 0;
-      flex-shrink: 0;
-    }
-
-    .option-card {
-      background: linear-gradient(145deg, #16202e, #0c111b);
-      border: 2px solid rgba(255,215,0,0.3);
-      border-radius: 30px;
-      padding: 18px 12px;
-      font-size: 24px;
-      font-weight: 700;
-      color: white;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 5px;
-      box-shadow: 0 10px 0 #00000055, 0 0 30px rgba(0,0,0,0.5);
-      transition: all 0.2s;
-      text-shadow: 0 2px 5px black;
-    }
-
-    .option-bn {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .option-bn i {
-      color: #ffd700;
-      font-size: 28px;
-      filter: drop-shadow(0 0 8px gold);
-    }
-
-    .option-en {
-      font-size: 18px;
-      color: #ffd700;
-      font-family: 'Inter', sans-serif;
-      font-weight: 500;
-    }
-
-    .option-correct {
-      background: #1e4a1e !important;
-      border-color: #ffd700 !important;
-      box-shadow: 0 0 60px #2e7d32, 0 10px 0 #0a2e0a !important;
-    }
-
-    /* ----- টাইমার (২০ সেকেন্ড) ----- */
-    .timer-section {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 15px;
-      margin-top: 5px;
-      flex-shrink: 0;
-    }
-
-    .circular-timer {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      width: 100%;
-      justify-content: space-between;
-    }
-
-    .progress-circle {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      background: conic-gradient(#ffd700 0deg, #2a2a2a 0deg);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.1s linear;
-      box-shadow: 0 0 40px rgba(255,215,0,0.4);
-    }
-
-    .inner-circle {
-      width: 82px;
-      height: 82px;
-      border-radius: 50%;
-      background: #0a0f1e;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      border: 3px solid rgba(255,215,0,0.6);
-    }
-
-    .inner-circle span {
-      font-size: 40px;
-      font-weight: 900;
-      color: #ffd700;
-      line-height: 1;
-    }
-
-    .inner-circle small {
-      color: rgba(255,255,255,0.9);
-      font-size: 16px;
-    }
-
-    .shuffle-badge {
-      background: rgba(255,215,0,0.1);
-      padding: 8px 20px;
-      border-radius: 50px;
-      border: 1px dashed gold;
-      font-size: 20px;
-      white-space: nowrap;
-    }
-
-    /* ----- কন্ট্রোলস (অডিও, ভয়েস, সাবস্ক্রাইব) ----- */
-    .controls-wrapper {
-      display: flex;
-      gap: 15px;
-      align-items: center;
-      width: 100%;
-      justify-content: flex-end;
-      flex-wrap: wrap;
-    }
-
-    .audio-control, .voice-control {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      background: rgba(0,0,0,0.5);
-      padding: 8px 20px;
-      border-radius: 60px;
-      border: 1px solid rgba(255,215,0,0.6);
-    }
-
-    .audio-control button, .voice-control button {
-      background: transparent;
-      border: none;
-      color: #ffd700;
-      font-size: 28px;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-
-    .subscribe-btn {
-      background: #ff0000;
-      border: none;
-      color: white;
-      padding: 12px 28px;
-      border-radius: 60px;
-      font-size: 24px;
-      font-weight: 700;
-      cursor: pointer;
-      backdrop-filter: blur(6px);
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      transition: 0.3s;
-      border: 1px solid rgba(255,255,255,0.3);
-    }
-
-    .subscribe-btn:hover {
-      background: #cc0000;
-      transform: scale(1.05);
-    }
-
-    .subscribe-btn i {
-      color: white;
-    }
-
-    .live-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 10px;
-      color: rgba(255,215,0,0.8);
-      font-size: 20px;
-      flex-shrink: 0;
-    }
-
-    @keyframes fadeSlide {
-      0% { opacity: 0; transform: translateY(30px); }
-      100% { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ---------- রেসপনসিভ ---------- */
-    @media screen and (orientation: landscape) and (max-height: 500px) {
-      .live-container { padding: 12px 20px; border-radius: 0; }
-      .logo-img { width: 40px; height: 40px; }
-      .logo span { font-size: 24px; }
-      .day-badge { font-size: 18px; padding: 6px 16px; }
-      .question-text { font-size: 26px; }
-      .question-english { font-size: 18px; }
-      .options-row { grid-template-columns: repeat(3, 1fr); gap: 10px; }
-      .option-card { font-size: 20px; padding: 10px; }
-      .option-en { font-size: 14px; }
-      .progress-circle { width: 70px; height: 70px; }
-      .inner-circle { width: 58px; height: 58px; }
-      .inner-circle span { font-size: 28px; }
-      .subscribe-btn { padding: 8px 20px; font-size: 20px; }
-      .watermark-logo { width: 150px; }
-    }
-
-    @media screen and (min-width: 1024px) and (orientation: landscape) {
-      .live-container { width: 95vw; height: 90vh; border-radius: 60px; padding: 30px 50px; }
-      .logo-img { width: 70px; height: 70px; }
-      .logo span { font-size: 48px; }
-      .day-badge { font-size: 32px; padding: 12px 32px; }
-      .question-text { font-size: 64px; }
-      .question-english { font-size: 32px; }
-      .options-row { grid-template-columns: repeat(3, 1fr); gap: 30px; }
-      .option-card { font-size: 40px; padding: 30px 15px; }
-      .option-en { font-size: 24px; }
-      .progress-circle { width: 140px; height: 140px; }
-      .inner-circle { width: 118px; height: 118px; }
-      .inner-circle span { font-size: 58px; }
-      .timer-section { flex-direction: row; align-items: center; justify-content: space-between; }
-      .subscribe-btn { padding: 18px 40px; font-size: 32px; }
-      .watermark-logo { width: 350px; }
-    }
-
-    /* ---------- iOS Safe Area ---------- */
-    @supports (padding: max(0px)) {
-      .live-container {
-        padding-left: max(20px, env(safe-area-inset-left));
-        padding-right: max(20px, env(safe-area-inset-right));
-        padding-bottom: max(16px, env(safe-area-inset-bottom));
-      }
-    }
-
+    /* ----- আপনার আগের CSS ঠিক আছে, কোনো পরিবর্তন নেই ----- */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; background: radial-gradient(circle at 50% 50%, #0b0e14, #030405); font-family: 'Cairo', 'Inter', sans-serif; color: white; display: flex; align-items: center; justify-content: center; position: relative; }
+    .watermark-logo { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 250px; height: auto; opacity: 0.1; pointer-events: none; z-index: 2; }
+    .live-container { position: relative; z-index: 10; width: 100%; max-width: 1600px; height: 100%; background: rgba(8, 12, 25, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 2px solid rgba(255, 215, 0, 0.35); box-shadow: 0 30px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,215,0,0.2) inset; display: flex; flex-direction: column; padding: 20px 25px; animation: borderGlow 4s infinite alternate; transition: padding 0.3s ease, border-radius 0.3s ease; overflow: hidden; }
+    @keyframes borderGlow { 0% { border-color: rgba(255,215,0,0.25); box-shadow: 0 30px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,215,0,0.15) inset; } 100% { border-color: rgba(255,215,0,0.6); box-shadow: 0 40px 80px rgba(255,215,0,0.2), 0 0 0 3px rgba(255,215,0,0.2) inset; } }
+    .live-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 2px dashed rgba(255,215,0,0.4); margin-bottom: 16px; flex-shrink: 0; }
+    .logo { display: flex; align-items: center; gap: 12px; }
+    .logo-img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid #ffd700; }
+    .logo span { font-size: 32px; font-weight: 900; background: linear-gradient(145deg, #ffe082, #ffb300); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 1px; }
+    .day-badge { background: rgba(0,0,0,0.6); padding: 8px 20px; border-radius: 40px; font-size: 24px; font-weight: 700; color: #ffd700; border: 1px solid #ffd700; box-shadow: 0 0 20px rgba(255,215,0,0.3); backdrop-filter: blur(4px); white-space: nowrap; }
+    .question-area { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: center; align-items: center; background: rgba(0,0,0,0.25); border-radius: 40px; margin: 10px 0; padding: 20px; border: 1px solid rgba(255,215,0,0.2); min-height: 0; }
+    .question-text { font-size: 36px; font-weight: 900; line-height: 1.4; text-align: center; color: #fff; text-shadow: 0 4px 20px rgba(0,0,0,0.8); word-break: break-word; animation: fadeSlide 0.8s ease; }
+    .question-english { font-size: 24px; font-weight: 500; color: #ffd700; margin-top: 10px; font-family: 'Inter', sans-serif; opacity: 0.9; }
+    .options-row { display: grid; grid-template-columns: 1fr; gap: 15px; width: 100%; margin: 15px 0; flex-shrink: 0; }
+    .option-card { background: linear-gradient(145deg, #16202e, #0c111b); border: 2px solid rgba(255,215,0,0.3); border-radius: 30px; padding: 18px 12px; font-size: 24px; font-weight: 700; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; box-shadow: 0 10px 0 #00000055, 0 0 30px rgba(0,0,0,0.5); transition: all 0.2s; text-shadow: 0 2px 5px black; }
+    .option-bn { display: flex; align-items: center; gap: 12px; }
+    .option-bn i { color: #ffd700; font-size: 28px; filter: drop-shadow(0 0 8px gold); }
+    .option-en { font-size: 18px; color: #ffd700; font-family: 'Inter', sans-serif; font-weight: 500; }
+    .option-correct { background: #1e4a1e !important; border-color: #ffd700 !important; box-shadow: 0 0 60px #2e7d32, 0 10px 0 #0a2e0a !important; }
+    .timer-section { display: flex; flex-direction: column; align-items: flex-start; gap: 15px; margin-top: 5px; flex-shrink: 0; }
+    .circular-timer { display: flex; align-items: center; gap: 20px; width: 100%; justify-content: space-between; }
+    .progress-circle { width: 100px; height: 100px; border-radius: 50%; background: conic-gradient(#ffd700 0deg, #2a2a2a 0deg); display: flex; align-items: center; justify-content: center; transition: background 0.1s linear; box-shadow: 0 0 40px rgba(255,215,0,0.4); }
+    .inner-circle { width: 82px; height: 82px; border-radius: 50%; background: #0a0f1e; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 3px solid rgba(255,215,0,0.6); }
+    .inner-circle span { font-size: 40px; font-weight: 900; color: #ffd700; line-height: 1; }
+    .inner-circle small { color: rgba(255,255,255,0.9); font-size: 16px; }
+    .shuffle-badge { background: rgba(255,215,0,0.1); padding: 8px 20px; border-radius: 50px; border: 1px dashed gold; font-size: 20px; white-space: nowrap; }
+    .controls-wrapper { display: flex; gap: 15px; align-items: center; width: 100%; justify-content: flex-end; flex-wrap: wrap; }
+    .audio-control, .voice-control { display: flex; align-items: center; gap: 12px; background: rgba(0,0,0,0.5); padding: 8px 20px; border-radius: 60px; border: 1px solid rgba(255,215,0,0.6); }
+    .audio-control button, .voice-control button { background: transparent; border: none; color: #ffd700; font-size: 28px; cursor: pointer; transition: 0.2s; }
+    .subscribe-btn { background: #ff0000; border: none; color: white; padding: 12px 28px; border-radius: 60px; font-size: 24px; font-weight: 700; cursor: pointer; backdrop-filter: blur(6px); display: flex; gap: 12px; align-items: center; transition: 0.3s; border: 1px solid rgba(255,255,255,0.3); }
+    .subscribe-btn:hover { background: #cc0000; transform: scale(1.05); }
+    .subscribe-btn i { color: white; }
+    .live-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; color: rgba(255,215,0,0.8); font-size: 20px; flex-shrink: 0; }
+    @keyframes fadeSlide { 0% { opacity: 0; transform: translateY(30px); } 100% { opacity: 1; transform: translateY(0); } }
+    @media screen and (orientation: landscape) and (max-height: 500px) { .live-container { padding: 12px 20px; border-radius: 0; } .logo-img { width: 40px; height: 40px; } .logo span { font-size: 24px; } .day-badge { font-size: 18px; padding: 6px 16px; } .question-text { font-size: 26px; } .question-english { font-size: 18px; } .options-row { grid-template-columns: repeat(3, 1fr); gap: 10px; } .option-card { font-size: 20px; padding: 10px; } .option-en { font-size: 14px; } .progress-circle { width: 70px; height: 70px; } .inner-circle { width: 58px; height: 58px; } .inner-circle span { font-size: 28px; } .subscribe-btn { padding: 8px 20px; font-size: 20px; } .watermark-logo { width: 150px; } }
+    @media screen and (min-width: 1024px) and (orientation: landscape) { .live-container { width: 95vw; height: 90vh; border-radius: 60px; padding: 30px 50px; } .logo-img { width: 70px; height: 70px; } .logo span { font-size: 48px; } .day-badge { font-size: 32px; padding: 12px 32px; } .question-text { font-size: 64px; } .question-english { font-size: 32px; } .options-row { grid-template-columns: repeat(3, 1fr); gap: 30px; } .option-card { font-size: 40px; padding: 30px 15px; } .option-en { font-size: 24px; } .progress-circle { width: 140px; height: 140px; } .inner-circle { width: 118px; height: 118px; } .inner-circle span { font-size: 58px; } .timer-section { flex-direction: row; align-items: center; justify-content: space-between; } .subscribe-btn { padding: 18px 40px; font-size: 32px; } .watermark-logo { width: 350px; } }
+    @supports (padding: max(0px)) { .live-container { padding-left: max(20px, env(safe-area-inset-left)); padding-right: max(20px, env(safe-area-inset-right)); padding-bottom: max(16px, env(safe-area-inset-bottom)); } }
     body, html { overflow: hidden; }
   </style>
 </head>
 <body>
 
-  <!-- ওয়াটারমার্ক লোগো (মাঝে) -->
+  <!-- ওয়াটারমার্ক লোগো -->
   <img src="https://github.com/RidwanAhmed6/yt-quiz/blob/main/IMG_1067.png?raw=true" alt="AudioQalb Logo" class="watermark-logo">
 
 <div class="live-container" id="app">
@@ -400,26 +69,17 @@
     </div>
   </div>
 
-  <!-- প্রশ্ন বক্স (বাংলা + ইংরেজি অনুবাদ) -->
+  <!-- প্রশ্ন বক্স -->
   <div class="question-area">
     <div class="question-text" id="question">প্রশ্ন লোড হচ্ছে…</div>
     <div class="question-english" id="questionEn"></div>
   </div>
 
-  <!-- অপশন (বাংলা + ইংরেজি অনুবাদ) -->
+  <!-- অপশন -->
   <div class="options-row" id="optionsRow">
-    <div class="option-card" id="optA">
-      <span class="option-bn"><i class="fas fa-cube"></i> A) ...</span>
-      <span class="option-en" id="optAEn"></span>
-    </div>
-    <div class="option-card" id="optB">
-      <span class="option-bn"><i class="fas fa-cube"></i> B) ...</span>
-      <span class="option-en" id="optBEn"></span>
-    </div>
-    <div class="option-card" id="optC">
-      <span class="option-bn"><i class="fas fa-cube"></i> C) ...</span>
-      <span class="option-en" id="optCEn"></span>
-    </div>
+    <div class="option-card" id="optA"><span class="option-bn"><i class="fas fa-cube"></i> A) ...</span><span class="option-en" id="optAEn"></span></div>
+    <div class="option-card" id="optB"><span class="option-bn"><i class="fas fa-cube"></i> B) ...</span><span class="option-en" id="optBEn"></span></div>
+    <div class="option-card" id="optC"><span class="option-bn"><i class="fas fa-cube"></i> C) ...</span><span class="option-en" id="optCEn"></span></div>
   </div>
 
   <!-- টাইমার + কন্ট্রোলস -->
@@ -431,32 +91,19 @@
           <small>সেকেন্ড</small>
         </div>
       </div>
-      <div class="shuffle-badge">
-        <i class="fas fa-shuffle"></i> স্বয়ংক্রিয় শাফল
-      </div>
+      <div class="shuffle-badge"><i class="fas fa-shuffle"></i> স্বয়ংক্রিয় শাফল</div>
     </div>
     
     <div class="controls-wrapper">
-      <!-- অডিও কন্ট্রোল (নাশিদ - অটো প্লে) -->
       <div class="audio-control">
-        <button id="audioToggleBtn">
-          <i id="audioIcon" class="fas fa-volume-up"></i>
-        </button>
+        <button id="audioToggleBtn"><i id="audioIcon" class="fas fa-volume-up"></i></button>
         <span style="color: white;">নাশিদ</span>
       </div>
-      
-      <!-- ইংলিশ ভয়েস কন্ট্রোল (ডিফল্ট স্পিচ সিন্থেসিস) -->
       <div class="voice-control">
-        <button id="voiceToggleBtn">
-          <i id="voiceIcon" class="fas fa-volume-up"></i>
-        </button>
+        <button id="voiceToggleBtn"><i id="voiceIcon" class="fas fa-volume-up"></i></button>
         <span style="color: white;">English Voice</span>
       </div>
-      
-      <!-- সাবস্ক্রাইব বাটন (আপনার ইউটিউব চ্যানেল লিংক দিন) -->
-      <button class="subscribe-btn" id="subscribeBtn">
-        <i class="fab fa-youtube"></i> সাবস্ক্রাইব
-      </button>
+      <button class="subscribe-btn" id="subscribeBtn"><i class="fab fa-youtube"></i> সাবস্ক্রাইব</button>
     </div>
   </div>
 
@@ -467,42 +114,35 @@
   </div>
 </div>
 
-<!-- ব্যাকগ্রাউন্ড নাশিদ - অটো প্লে (আনমিউটেড) -->
+<!-- অডিও ফাইল -->
 <audio id="backgroundAudio" loop autoplay playsinline>
   <source src="https://github.com/RidwanAhmed6/yt-quiz/raw/refs/heads/main/copy_34F68A0F-7768-4ECA-B7C4-7774C0812A01.mp3" type="audio/mpeg">
-  Your browser does not support audio.
 </audio>
 
 <script>
   // ============================================
-  // AudioQalb কুইজ চ্যালেঞ্জ - ফাইনাল ভার্সন
-  // ফিচার: বাংলা + অটো ইংলিশ অনুবাদ, ডিফল্ট ইংলিশ ভয়েস (স্পিচ সিন্থেসিস)
-  // টাইমার: ২০ সেকেন্ড, ডেল: ২ সেকেন্ড
-  // সীট: শুধু বাংলা কলাম, ইংরেজি লাগবে না
-  // Apps Script URL: আপনার দেওয়া URL ব্যবহার করা হয়েছে
+  // AudioQalb কুইজ চ্যালেঞ্জ - ফাইনাল ভার্সন (ক্যাশ বাইপাস সহ)
   // ============================================
 
-  // ---------- কনফিগারেশন ----------
-  const API_URL = "https://script.google.com/macros/s/AKfycbxVAofDgTbFovVopVoDr69FjqkI5HVu4AL0UWfWjd0u9ek063wCmEZY3KXdyDWFoDfRiA/exec";
-  const TOTAL_TIME = 20;        // ২০ সেকেন্ড
-  const DELAY_NEXT = 2000;      // ২ সেকেন্ড (2000ms)
-  const YOUTUBE_CHANNEL_URL = "https://www.youtube.com/@AudioQalb?sub_confirmation=1"; // ⚠️ আপনার চ্যানেল লিংক দিন
+  // ---------- আপনার সঠিক Apps Script URL (আপনার দেওয়া) ----------
+  const API_URL = "https://script.google.com/macros/s/AKfycbwbaipxG8VktroYNoOquyKfd4WcWgSKn-t7o3jSee0bZcaqYEZ8Z7FEAxKgDFVH32ewuQ/exec";
+  const TOTAL_TIME = 20;
+  const DELAY_NEXT = 2000;
+  const YOUTUBE_CHANNEL_URL = "https://www.youtube.com/@AudioQalb?sub_confirmation=1";
 
   // ---------- গ্লোবাল ভেরিয়েবল ----------
   let allQuizData = [];
-  let quizData = [];            // ফিল্টার করা ডাটা (অনূদিত টেক্সট সহ)
+  let quizData = [];
   let currentIdx = 0;
   let timerInterval = null;
   let timeLeft = TOTAL_TIME;
   let isAnswered = false;
   let correctAns = '';
   let currentRamadanDay = 15;
-  let isVoiceEnabled = true;    // ডিফল্ট চালু
-
-  // অনুবাদ ক্যাশ
+  let isVoiceEnabled = true;
   const translationCache = new Map();
 
-  // ---------- DOM এলিমেন্ট ----------
+  // DOM এলিমেন্ট
   const questionEl = document.getElementById('question');
   const questionEnEl = document.getElementById('questionEn');
   const optA = document.getElementById('optA');
@@ -521,54 +161,35 @@
   const voiceIcon = document.getElementById('voiceIcon');
   const subscribeBtn = document.getElementById('subscribeBtn');
 
-  // ---------- সাবস্ক্রাইব বাটন ----------
-  subscribeBtn.addEventListener('click', function() {
-    window.open(YOUTUBE_CHANNEL_URL, '_blank');
-  });
+  // ---------- সাবস্ক্রাইব ----------
+  subscribeBtn.addEventListener('click', () => window.open(YOUTUBE_CHANNEL_URL, '_blank'));
 
-  // ---------- ইংলিশ ভয়েস ফাংশন (ডিফল্ট স্পিচ সিন্থেসিস) ----------
+  // ---------- ইংলিশ ভয়েস ----------
   function speakEnglish(text) {
-    if (!isVoiceEnabled) return;
-    if (!window.speechSynthesis) {
-      console.warn('Speech synthesis not supported');
-      return;
-    }
-    // চলমান স্পিচ থামাও
+    if (!isVoiceEnabled || !window.speechSynthesis) return;
     window.speechSynthesis.cancel();
-
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = 'en-US';
     utterance.rate = 0.9;
     utterance.pitch = 0.8;
     utterance.volume = 1;
-
-    // ইংলিশ ভয়েস নির্বাচন (UK English Male প্রেফারেন্স)
     const voices = window.speechSynthesis.getVoices();
-    const preferredVoice = voices.find(v => 
-      v.lang.includes('en-GB') && v.name.includes('Male')
-    ) || voices.find(v => 
-      v.lang.includes('en-US') && v.name.includes('Male')
-    ) || voices.find(v => 
-      v.lang.includes('en-GB')
-    ) || voices.find(v => 
-      v.lang.includes('en')
-    );
-    
-    if (preferredVoice) {
-      utterance.voice = preferredVoice;
-    }
-
+    const preferredVoice = voices.find(v => v.lang.includes('en-GB') && v.name.includes('Male'))
+      || voices.find(v => v.lang.includes('en-US') && v.name.includes('Male'))
+      || voices.find(v => v.lang.includes('en-GB'))
+      || voices.find(v => v.lang.includes('en'));
+    if (preferredVoice) utterance.voice = preferredVoice;
     window.speechSynthesis.speak(utterance);
   }
 
   // ---------- ভয়েস টগল ----------
-  voiceToggleBtn.addEventListener('click', function() {
+  voiceToggleBtn.addEventListener('click', () => {
     isVoiceEnabled = !isVoiceEnabled;
     voiceIcon.className = isVoiceEnabled ? 'fas fa-volume-up' : 'fas fa-volume-off';
   });
 
-  // ---------- অডিও কন্ট্রোল (নাশিদ) ----------
-  audioToggleBtn.addEventListener('click', function() {
+  // ---------- অডিও টগল ----------
+  audioToggleBtn.addEventListener('click', () => {
     if (audioEl.paused) {
       audioEl.play().catch(e => console.log(e));
       audioIcon.className = 'fas fa-volume-up';
@@ -577,34 +198,23 @@
       audioIcon.className = 'fas fa-volume-mute';
     }
   });
-
-  // অটোপ্লে চেষ্টা
   audioEl.play().catch(e => console.log('Autoplay prevented:', e));
 
-  // ---------- আসর (Day) ব্যাজ আপডেট ----------
+  // ---------- আসর ব্যাজ আপডেট ----------
   function updateAsrBadge(day) {
-    if (day && day >= 1 && day <= 30) {
-      asrDaySpan.innerText = day;
-    } else {
-      asrDaySpan.innerText = '১৫';
-    }
+    asrDaySpan.innerText = (day && day >= 1 && day <= 30) ? day : '১৫';
   }
 
-  // ---------- অনুবাদ ফাংশন (MyMemory API - ফ্রি) ----------
+  // ---------- অনুবাদ ----------
   async function translateText(bengaliText) {
     if (!bengaliText || bengaliText.trim() === '') return '';
-    if (translationCache.has(bengaliText)) {
-      return translationCache.get(bengaliText);
-    }
+    if (translationCache.has(bengaliText)) return translationCache.get(bengaliText);
     try {
       const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(bengaliText)}&langpair=bn|en`;
-      const response = await fetch(url);
-      const data = await response.json();
+      const res = await fetch(url);
+      const data = await res.json();
       let translated = data.responseData.translatedText;
-      // যদি অনুবাদ ব্যর্থ হয়, মূল টেক্সট রাখি
-      if (translated === bengaliText || !translated) {
-        translated = bengaliText;
-      }
+      if (translated === bengaliText || !translated) translated = bengaliText;
       translationCache.set(bengaliText, translated);
       return translated;
     } catch (e) {
@@ -613,25 +223,29 @@
     }
   }
 
-  // ---------- পুরো কুইজ ডাটা অনুবাদ করা ----------
   async function translateQuizData(data) {
-    const translatedData = [];
+    const translated = [];
     for (const item of data) {
-      const translatedItem = { ...item };
-      translatedItem.questionEN = await translateText(item.question);
-      translatedItem.optionAEN = await translateText(item.optionA);
-      translatedItem.optionBEN = await translateText(item.optionB);
-      translatedItem.optionCEN = await translateText(item.optionC);
-      translatedData.push(translatedItem);
+      translated.push({
+        ...item,
+        questionEN: await translateText(item.question),
+        optionAEN: await translateText(item.optionA),
+        optionBEN: await translateText(item.optionB),
+        optionCEN: await translateText(item.optionC)
+      });
     }
-    return translatedData;
+    return translated;
   }
 
-  // ---------- API ফেচ ও অনুবাদ ----------
+  // ---------- API ফেচ (ক্যাশ বাইপাস) ----------
   async function fetchQuizzes() {
     try {
-      const res = await fetch(API_URL);
+      // 🔥 ক্যাশ বাইপাস: প্রতিবার ইউনিক URL
+      const CACHE_BUSTER = '?t=' + new Date().getTime();
+      const res = await fetch(API_URL + CACHE_BUSTER);
+      
       if (!res.ok) throw new Error(`HTTP error ${res.status}`);
+      
       allQuizData = await res.json();
       
       if (allQuizData.error) {
@@ -639,25 +253,18 @@
         return;
       }
 
-      // 'day' কলাম আছে কিনা চেক
       const hasDayColumn = allQuizData.length > 0 && allQuizData[0].hasOwnProperty('day');
       
       if (hasDayColumn) {
         const firstDay = parseInt(allQuizData[0].day);
-        if (!isNaN(firstDay) && firstDay >= 1 && firstDay <= 30) {
-          currentRamadanDay = firstDay;
-        }
-        // ফিল্টার: শুধু currentRamadanDay এর প্রশ্ন
+        if (!isNaN(firstDay) && firstDay >= 1 && firstDay <= 30) currentRamadanDay = firstDay;
         let filtered = allQuizData.filter(q => parseInt(q.day) === currentRamadanDay);
-        if (filtered.length === 0) filtered = [...allQuizData]; // fallback
-        // অনুবাদ সহ সংরক্ষণ
+        if (filtered.length === 0) filtered = [...allQuizData];
         quizData = await translateQuizData(filtered);
       } else {
-        // day কলাম নেই -> সব ডাটা অনুবাদ
         quizData = await translateQuizData(allQuizData);
       }
 
-      // আসর ব্যাজ আপডেট
       updateAsrBadge(currentRamadanDay);
 
       if (quizData.length) {
@@ -673,7 +280,6 @@
     }
   }
 
-  // ---------- শাফল ----------
   function shuffleArray(arr) {
     for (let i = arr.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -681,32 +287,21 @@
     }
   }
 
-  // ---------- প্রশ্ন দেখান (বাংলা + অনূদিত ইংরেজি) ----------
   function showQuestion(index) {
     if (!quizData.length) return;
     const q = quizData[index];
-    
-    // বাংলা
     questionEl.innerText = q.question || 'প্রশ্ন নেই';
     optA.querySelector('.option-bn').innerHTML = `<i class="fas fa-cube"></i> A) ${q.optionA || ''}`;
     optB.querySelector('.option-bn').innerHTML = `<i class="fas fa-cube"></i> B) ${q.optionB || ''}`;
     optC.querySelector('.option-bn').innerHTML = `<i class="fas fa-cube"></i> C) ${q.optionC || ''}`;
-    
-    // ইংরেজি অনুবাদ
     questionEnEl.innerText = q.questionEN || '';
     optAEn.innerText = q.optionAEN || '';
     optBEn.innerText = q.optionBEN || '';
     optCEn.innerText = q.optionCEN || '';
-    
     correctAns = (q.correct || 'A').toUpperCase();
     removeHighlights();
     isAnswered = false;
-
-    // ইংলিশ ভয়েস চালু থাকলে প্রশ্ন (ইংরেজি) পড়ে শোনাও
-    if (isVoiceEnabled) {
-      let speechText = q.questionEN || q.question; // ইংরেজি না থাকলে বাংলা (তাও ইংরেজি উচ্চারণে)
-      speakEnglish(speechText);
-    }
+    if (isVoiceEnabled) speakEnglish(q.questionEN || q.question);
   }
 
   function removeHighlights() {
@@ -715,14 +310,11 @@
     optC.classList.remove('option-correct');
   }
 
-  // ---------- সঠিক উত্তর দেখান ----------
   function showCorrectAnswer() {
     if (isAnswered) return;
     isAnswered = true;
     const el = document.getElementById(`opt${correctAns}`);
     if (el) el.classList.add('option-correct');
-
-    // ইংলিশ ভয়েস - সঠিক উত্তর
     if (isVoiceEnabled) {
       let answerText = '';
       if (correctAns === 'A') answerText = optAEn.innerText || optA.innerText.replace('A)', '').trim();
@@ -732,7 +324,6 @@
     }
   }
 
-  // ---------- টাইমার (২০ সেকেন্ড) ----------
   function startTimer() {
     if (timerInterval) clearInterval(timerInterval);
     timeLeft = TOTAL_TIME;
@@ -761,20 +352,17 @@
     startTimer();
   }
 
-  // ---------- শুরু করুন ----------
+  // ---------- বুটস্ট্র্যাপ ----------
   fetchQuizzes();
 
-  // ---------- ভয়েস রেডিনেস (ভয়েস লোড নিশ্চিত) ----------
+  // ---------- ভয়েস রেডিনেস ----------
   if (window.speechSynthesis) {
     window.speechSynthesis.getVoices();
-    // iOS-এর জন্য প্রথমবার ইউজার ইন্টারঅ্যাকশনে ডামি স্পিচ
     document.body.addEventListener('touchstart', function dummySpeech() {
-      if (window.speechSynthesis) {
-        const dummy = new SpeechSynthesisUtterance('');
-        dummy.volume = 0;
-        window.speechSynthesis.speak(dummy);
-        document.body.removeEventListener('touchstart', dummySpeech);
-      }
+      const dummy = new SpeechSynthesisUtterance('');
+      dummy.volume = 0;
+      window.speechSynthesis.speak(dummy);
+      document.body.removeEventListener('touchstart', dummySpeech);
     }, { once: true });
   }
 </script>
