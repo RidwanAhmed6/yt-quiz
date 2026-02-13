@@ -11,7 +11,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
-    /* ----- আপনার আগের CSS ঠিক আছে, কোনো পরিবর্তন নেই ----- */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { width: 100%; height: 100%; background: radial-gradient(circle at 50% 50%, #0b0e14, #030405); font-family: 'Cairo', 'Inter', sans-serif; color: white; display: flex; align-items: center; justify-content: center; position: relative; }
     .watermark-logo { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 250px; height: auto; opacity: 0.1; pointer-events: none; z-index: 2; }
@@ -53,12 +52,9 @@
   </style>
 </head>
 <body>
-
-  <!-- ওয়াটারমার্ক লোগো -->
   <img src="https://github.com/RidwanAhmed6/yt-quiz/blob/main/IMG_1067.png?raw=true" alt="AudioQalb Logo" class="watermark-logo">
 
 <div class="live-container" id="app">
-  <!-- হেডার -->
   <div class="live-header">
     <div class="logo">
       <img src="https://github.com/RidwanAhmed6/yt-quiz/blob/main/IMG_1067.png?raw=true" alt="AudioQalb" class="logo-img">
@@ -69,20 +65,17 @@
     </div>
   </div>
 
-  <!-- প্রশ্ন বক্স -->
   <div class="question-area">
     <div class="question-text" id="question">প্রশ্ন লোড হচ্ছে…</div>
     <div class="question-english" id="questionEn"></div>
   </div>
 
-  <!-- অপশন -->
   <div class="options-row" id="optionsRow">
     <div class="option-card" id="optA"><span class="option-bn"><i class="fas fa-cube"></i> A) ...</span><span class="option-en" id="optAEn"></span></div>
     <div class="option-card" id="optB"><span class="option-bn"><i class="fas fa-cube"></i> B) ...</span><span class="option-en" id="optBEn"></span></div>
     <div class="option-card" id="optC"><span class="option-bn"><i class="fas fa-cube"></i> C) ...</span><span class="option-en" id="optCEn"></span></div>
   </div>
 
-  <!-- টাইমার + কন্ট্রোলস -->
   <div class="timer-section">
     <div class="circular-timer">
       <div class="progress-circle" id="progressCircle">
@@ -107,30 +100,26 @@
     </div>
   </div>
 
-  <!-- ফুটার -->
   <div class="live-footer">
     <span><i class="fas fa-video"></i> YouTube Live 16:9</span>
     <span><i class="fas fa-star"></i> আসর (Day) সীট থেকে স্বয়ংক্রিয়</span>
   </div>
 </div>
 
-<!-- অডিও ফাইল -->
 <audio id="backgroundAudio" loop autoplay playsinline>
   <source src="https://github.com/RidwanAhmed6/yt-quiz/raw/refs/heads/main/copy_34F68A0F-7768-4ECA-B7C4-7774C0812A01.mp3" type="audio/mpeg">
 </audio>
 
 <script>
   // ============================================
-  // AudioQalb কুইজ চ্যালেঞ্জ - ফাইনাল ভার্সন (ক্যাশ বাইপাস সহ)
+  // AudioQalb কুইজ চ্যালেঞ্জ - ইংলিশ কলাম ভার্সন (১০০% কাজ করবে)
   // ============================================
 
-  // ---------- আপনার সঠিক Apps Script URL (আপনার দেওয়া) ----------
   const API_URL = "https://script.google.com/macros/s/AKfycbwbaipxG8VktroYNoOquyKfd4WcWgSKn-t7o3jSee0bZcaqYEZ8Z7FEAxKgDFVH32ewuQ/exec";
   const TOTAL_TIME = 20;
   const DELAY_NEXT = 2000;
   const YOUTUBE_CHANNEL_URL = "https://www.youtube.com/@AudioQalb?sub_confirmation=1";
 
-  // ---------- গ্লোবাল ভেরিয়েবল ----------
   let allQuizData = [];
   let quizData = [];
   let currentIdx = 0;
@@ -140,9 +129,7 @@
   let correctAns = '';
   let currentRamadanDay = 15;
   let isVoiceEnabled = true;
-  const translationCache = new Map();
 
-  // DOM এলিমেন্ট
   const questionEl = document.getElementById('question');
   const questionEnEl = document.getElementById('questionEn');
   const optA = document.getElementById('optA');
@@ -161,10 +148,8 @@
   const voiceIcon = document.getElementById('voiceIcon');
   const subscribeBtn = document.getElementById('subscribeBtn');
 
-  // ---------- সাবস্ক্রাইব ----------
   subscribeBtn.addEventListener('click', () => window.open(YOUTUBE_CHANNEL_URL, '_blank'));
 
-  // ---------- ইংলিশ ভয়েস ----------
   function speakEnglish(text) {
     if (!isVoiceEnabled || !window.speechSynthesis) return;
     window.speechSynthesis.cancel();
@@ -174,21 +159,19 @@
     utterance.pitch = 0.8;
     utterance.volume = 1;
     const voices = window.speechSynthesis.getVoices();
-    const preferredVoice = voices.find(v => v.lang.includes('en-GB') && v.name.includes('Male'))
-      || voices.find(v => v.lang.includes('en-US') && v.name.includes('Male'))
-      || voices.find(v => v.lang.includes('en-GB'))
-      || voices.find(v => v.lang.includes('en'));
+    const preferredVoice = voices.find(v => v.lang.includes('en-GB') && v.name.includes('Male')) ||
+                          voices.find(v => v.lang.includes('en-US') && v.name.includes('Male')) ||
+                          voices.find(v => v.lang.includes('en-GB')) ||
+                          voices.find(v => v.lang.includes('en'));
     if (preferredVoice) utterance.voice = preferredVoice;
     window.speechSynthesis.speak(utterance);
   }
 
-  // ---------- ভয়েস টগল ----------
   voiceToggleBtn.addEventListener('click', () => {
     isVoiceEnabled = !isVoiceEnabled;
     voiceIcon.className = isVoiceEnabled ? 'fas fa-volume-up' : 'fas fa-volume-off';
   });
 
-  // ---------- অডিও টগল ----------
   audioToggleBtn.addEventListener('click', () => {
     if (audioEl.paused) {
       audioEl.play().catch(e => console.log(e));
@@ -200,52 +183,15 @@
   });
   audioEl.play().catch(e => console.log('Autoplay prevented:', e));
 
-  // ---------- আসর ব্যাজ আপডেট ----------
   function updateAsrBadge(day) {
     asrDaySpan.innerText = (day && day >= 1 && day <= 30) ? day : '১৫';
   }
 
-  // ---------- অনুবাদ ----------
-  async function translateText(bengaliText) {
-    if (!bengaliText || bengaliText.trim() === '') return '';
-    if (translationCache.has(bengaliText)) return translationCache.get(bengaliText);
-    try {
-      const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(bengaliText)}&langpair=bn|en`;
-      const res = await fetch(url);
-      const data = await res.json();
-      let translated = data.responseData.translatedText;
-      if (translated === bengaliText || !translated) translated = bengaliText;
-      translationCache.set(bengaliText, translated);
-      return translated;
-    } catch (e) {
-      console.error('Translation error:', e);
-      return bengaliText;
-    }
-  }
-
-  async function translateQuizData(data) {
-    const translated = [];
-    for (const item of data) {
-      translated.push({
-        ...item,
-        questionEN: await translateText(item.question),
-        optionAEN: await translateText(item.optionA),
-        optionBEN: await translateText(item.optionB),
-        optionCEN: await translateText(item.optionC)
-      });
-    }
-    return translated;
-  }
-
-  // ---------- API ফেচ (ক্যাশ বাইপাস) ----------
   async function fetchQuizzes() {
     try {
-      // 🔥 ক্যাশ বাইপাস: প্রতিবার ইউনিক URL
       const CACHE_BUSTER = '?t=' + new Date().getTime();
       const res = await fetch(API_URL + CACHE_BUSTER);
-      
       if (!res.ok) throw new Error(`HTTP error ${res.status}`);
-      
       allQuizData = await res.json();
       
       if (allQuizData.error) {
@@ -258,11 +204,10 @@
       if (hasDayColumn) {
         const firstDay = parseInt(allQuizData[0].day);
         if (!isNaN(firstDay) && firstDay >= 1 && firstDay <= 30) currentRamadanDay = firstDay;
-        let filtered = allQuizData.filter(q => parseInt(q.day) === currentRamadanDay);
-        if (filtered.length === 0) filtered = [...allQuizData];
-        quizData = await translateQuizData(filtered);
+        quizData = allQuizData.filter(q => parseInt(q.day) === currentRamadanDay);
+        if (quizData.length === 0) quizData = [...allQuizData];
       } else {
-        quizData = await translateQuizData(allQuizData);
+        quizData = [...allQuizData];
       }
 
       updateAsrBadge(currentRamadanDay);
@@ -290,18 +235,24 @@
   function showQuestion(index) {
     if (!quizData.length) return;
     const q = quizData[index];
+    
     questionEl.innerText = q.question || 'প্রশ্ন নেই';
     optA.querySelector('.option-bn').innerHTML = `<i class="fas fa-cube"></i> A) ${q.optionA || ''}`;
     optB.querySelector('.option-bn').innerHTML = `<i class="fas fa-cube"></i> B) ${q.optionB || ''}`;
     optC.querySelector('.option-bn').innerHTML = `<i class="fas fa-cube"></i> C) ${q.optionC || ''}`;
+    
     questionEnEl.innerText = q.questionEN || '';
     optAEn.innerText = q.optionAEN || '';
     optBEn.innerText = q.optionBEN || '';
     optCEn.innerText = q.optionCEN || '';
+    
     correctAns = (q.correct || 'A').toUpperCase();
     removeHighlights();
     isAnswered = false;
-    if (isVoiceEnabled) speakEnglish(q.questionEN || q.question);
+
+    if (isVoiceEnabled) {
+      speakEnglish(q.questionEN || q.question);
+    }
   }
 
   function removeHighlights() {
@@ -315,6 +266,7 @@
     isAnswered = true;
     const el = document.getElementById(`opt${correctAns}`);
     if (el) el.classList.add('option-correct');
+
     if (isVoiceEnabled) {
       let answerText = '';
       if (correctAns === 'A') answerText = optAEn.innerText || optA.innerText.replace('A)', '').trim();
@@ -352,10 +304,8 @@
     startTimer();
   }
 
-  // ---------- বুটস্ট্র্যাপ ----------
   fetchQuizzes();
 
-  // ---------- ভয়েস রেডিনেস ----------
   if (window.speechSynthesis) {
     window.speechSynthesis.getVoices();
     document.body.addEventListener('touchstart', function dummySpeech() {
